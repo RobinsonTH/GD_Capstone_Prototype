@@ -1,19 +1,25 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
     public Rigidbody2D rb;
+    public GameObject spriteHandler;
     public float moveSpeed = 4f;
     public PlayerInputActions playerControls;
 
     Vector2 moveDirection = Vector2.zero;
     private InputAction move;
     private InputAction fire;
-    private int damaged;
+    private float damaged;
+    private float lostControl;
+
+    public GameObject warp1;
+    public GameObject warp2;
 
     private void Awake()
     {
@@ -40,40 +46,42 @@ public class PlayerMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        damaged = 0;
+        damaged = -1;
+        //warp1 = GameObject.Find("WarpEntrance");
+        //warp2 = GameObject.Find("WarpExit");
     }
 
     // Update is called once per frame
     void Update()
     {
-        
-    }
-
-    private void FixedUpdate()
-    {
-        if (damaged == 0)
+        if(lostControl > 0)
         {
+            lostControl -= Time.deltaTime;
+        }
+        else
+        {
+            lostControl = 0;
+            moveSpeed = 4f;
             moveDirection = move.ReadValue<Vector2>();
         }
-        else if (damaged++ >= 6)
+
+        if (damaged >= 0)
         {
-            moveDirection = move.ReadValue<Vector2>();
-            moveSpeed = 4f;
+            damaged += Time.deltaTime;
 
-            if(((damaged/10) % 2 == 0) && !this.GetComponent<Renderer>().enabled)
+            if ((((int)(damaged*60) / 10) % 2 == 0) && !spriteHandler.GetComponent<SpriteRenderer>().enabled)
             {
-                this.GetComponent<Renderer>().enabled = true;
+                spriteHandler.GetComponent<SpriteRenderer>().enabled = true;
             }
-            else if(((damaged/10) % 2 == 1) && this.GetComponent<Renderer>().enabled)
+            else if ((((int)(damaged*60) / 10) % 2 == 1) && spriteHandler.GetComponent<SpriteRenderer>().enabled)
             {
-                this.GetComponent<Renderer>().enabled = false;
+                spriteHandler.GetComponent<SpriteRenderer>().enabled = false;
             }
 
-
-            if (damaged >= 60)
+            if (damaged >= 1)
             {
-                this.GetComponent<Renderer>().enabled = true;
-                damaged = 0;
+                spriteHandler.GetComponent<SpriteRenderer>().enabled = true;
+                damaged = -1;
             }
         }
         rb.velocity = new Vector2(moveDirection.x * moveSpeed, moveDirection.y * moveSpeed);
@@ -81,9 +89,10 @@ public class PlayerMovement : MonoBehaviour
 
     public void TakeDamage(int damage, bool recoil, Collider2D source)
     {
-        if(damaged == 0)
+        if(damaged == -1)
         {
-            damaged = 1;
+            damaged = 0;
+            lostControl = 0.1f;
             if(recoil)
             {
                 //set direction vector to be directly away from damage source
@@ -97,18 +106,65 @@ public class PlayerMovement : MonoBehaviour
 
     void Fire(InputAction.CallbackContext context)
     {
-        //Debug.Log(transform.position.x.ToString() + " " + this.GetComponent<boundaries>().getBounds().x.ToString());
-        if(Math.Abs(transform.position.x) == (this.GetComponent<boundaries>().getBounds().x - (transform.GetComponent<SpriteRenderer>().bounds.size.x / 2))
-            && Math.Abs(transform.position.x + move.ReadValue<Vector2>().x) > (this.GetComponent<boundaries>().getBounds().x - (transform.GetComponent<SpriteRenderer>().bounds.size.x / 2)))
+        if (lostControl == 0)
         {
-            //Debug.Log("Screenwarping");
-            transform.position = new Vector3(transform.position.x * -1, transform.position.y, 0);
+            //Debug.Log(transform.position.x.ToString() + " " + this.GetComponent<boundaries>().getBounds().x.ToString());
+            if (Math.Abs(transform.position.x) == (this.GetComponent<boundaries>().getBounds().x - (transform.GetComponent<SpriteRenderer>().bounds.size.x / 2))
+                && Math.Abs(transform.position.x + move.ReadValue<Vector2>().x) > (this.GetComponent<boundaries>().getBounds().x - (transform.GetComponent<SpriteRenderer>().bounds.size.x / 2)))
+            {
+                //Debug.Log("Screenwarping");
+                if (move.ReadValue<Vector2>().x < 0)
+                {
+                    ScreenWarp("left");
+                }
+                else
+                {
+                    ScreenWarp("right");
+                }
+            }
+            else if (Math.Abs(transform.position.y) == (this.GetComponent<boundaries>().getBounds().y - (transform.GetComponent<SpriteRenderer>().bounds.size.y / 2))
+                && Math.Abs(transform.position.y + move.ReadValue<Vector2>().y) > (this.GetComponent<boundaries>().getBounds().y - (transform.GetComponent<SpriteRenderer>().bounds.size.y / 2)))
+            {
+                //Debug.Log("Screenwarping");
+                if (move.ReadValue<Vector2>().y < 0)
+                {
+                    ScreenWarp("bottom");
+                }
+                else
+                {
+                    ScreenWarp("top");
+                }
+            }
         }
-        else if(Math.Abs(transform.position.y) == (this.GetComponent<boundaries>().getBounds().y - (transform.GetComponent<SpriteRenderer>().bounds.size.y / 2))
-            && Math.Abs(transform.position.y + move.ReadValue<Vector2>().y) > (this.GetComponent<boundaries>().getBounds().y - (transform.GetComponent<SpriteRenderer>().bounds.size.y / 2)))
+    }
+
+    private void ScreenWarp(string direction)
+    {
+        //x is false
+        //y is true
+        if (!warp1.activeSelf && !warp2.activeSelf)
         {
-            //Debug.Log("Screenwarping");
-            transform.position = new Vector3(transform.position.x, transform.position.y * -1, 0);
+            warp1.SetActive(true);
+            warp2.SetActive(true);
+
+            lostControl = 1.5f;
+            moveDirection = Vector3.zero;
+
+            if (direction == "left" || direction == "right")
+            {
+                warp1.GetComponent<WarpAnimation>().StartAnimation(new Vector3(this.GetComponent<boundaries>().getBounds().x, transform.position.y, 0));
+                warp2.GetComponent<WarpAnimation>().StartAnimation(new Vector3(this.GetComponent<boundaries>().getBounds().x * -1, transform.position.y, 0));
+                //transform.position = new Vector3(transform.position.x * -1, transform.position.y, 0);
+
+            }
+            else
+            {
+                warp1.GetComponent<WarpAnimation>().StartAnimation(new Vector3(transform.position.x, this.GetComponent<boundaries>().getBounds().y, 0));
+                warp2.GetComponent<WarpAnimation>().StartAnimation(new Vector3(transform.position.x, this.GetComponent<boundaries>().getBounds().y * -1, 0));
+                //transform.position = new Vector3(transform.position.x, transform.position.y * -1, 0);
+            }
+            spriteHandler.GetComponent<WarpSprite>().StartAnimation(direction);
+
         }
     }
 }

@@ -18,7 +18,7 @@ public class TestEnemyAI : MonoBehaviour
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
         //Calculate direction to target by taking the difference of positions
         moveDirection.x = target.transform.position.x - transform.position.x;
