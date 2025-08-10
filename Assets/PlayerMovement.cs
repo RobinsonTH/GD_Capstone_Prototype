@@ -9,17 +9,22 @@ public class PlayerMovement : MonoBehaviour
 {
     public Rigidbody2D rb;
     public GameObject spriteHandler;
-    public float moveSpeed = 4f;
     public PlayerInputActions playerControls;
+
+    public float maxHealth;
+    public float moveSpeed;
+    public float knockbackBaseSpeed;
 
     Vector2 moveDirection = Vector2.zero;
     private InputAction move;
     private InputAction fire;
-    private float damaged;
-    private float lostControl;
+    private float currentHealth;
+    private float damaged; //used to check for recent damage
+    private float lostControl; //controls knockback time
 
     public GameObject warp1;
     public GameObject warp2;
+    public GameObject sword;
 
     private void Awake()
     {
@@ -47,6 +52,7 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         damaged = -1;
+        currentHealth = maxHealth;
         //warp1 = GameObject.Find("WarpEntrance");
         //warp2 = GameObject.Find("WarpExit");
     }
@@ -63,6 +69,11 @@ public class PlayerMovement : MonoBehaviour
             lostControl = 0;
             moveSpeed = 4f;
             moveDirection = move.ReadValue<Vector2>();
+            if (moveDirection != Vector2.zero)
+            {
+                //transform.rotation = Quaternion.LookRotation(new Vector3 (moveDirection.x, moveDirection.y, 0).normalized);
+                transform.rotation = Quaternion.LookRotation(Vector3.forward, moveDirection.normalized);
+            }
         }
 
         if (damaged >= 0)
@@ -87,7 +98,7 @@ public class PlayerMovement : MonoBehaviour
         rb.velocity = new Vector2(moveDirection.x * moveSpeed, moveDirection.y * moveSpeed);
     }
 
-    public void TakeDamage(int damage, bool recoil, Collider2D source)
+    /*public void TakeDamage(float damage, bool recoil, Collider2D source)
     {
         if(damaged == -1)
         {
@@ -102,6 +113,37 @@ public class PlayerMovement : MonoBehaviour
                 moveSpeed = 15f;
             }
         }
+    }*/
+
+    public void TakeDamage(float damage, float recoilTime, float recoilMagnitude, Collider2D source)
+    {
+        if (damaged == -1)
+        {
+            currentHealth -= damage;
+            if (currentHealth <= 0)
+            {
+                //gameObject.SetActive(false);
+                Die();
+                return;
+            }
+
+            damaged = 0;
+
+            if (recoilTime > 0)
+            {
+                lostControl = recoilTime;
+                //set direction vector to be directly away from damage source
+                moveDirection.x = transform.position.x - source.transform.position.x;
+                moveDirection.y = transform.position.y - source.transform.position.y;
+                moveDirection.Normalize();
+                moveSpeed = knockbackBaseSpeed * recoilMagnitude;
+            }
+        }
+    }
+
+    public void Die()
+    {
+        gameObject.SetActive(false);
     }
 
     void Fire(InputAction.CallbackContext context)
@@ -112,7 +154,7 @@ public class PlayerMovement : MonoBehaviour
             if (Math.Abs(transform.position.x) == (this.GetComponent<boundaries>().getBounds().x - (transform.GetComponent<SpriteRenderer>().bounds.size.x / 2))
                 && Math.Abs(transform.position.x + move.ReadValue<Vector2>().x) > (this.GetComponent<boundaries>().getBounds().x - (transform.GetComponent<SpriteRenderer>().bounds.size.x / 2)))
             {
-                //Debug.Log("Screenwarping");
+                Debug.Log("Screenwarping Horizontal");
                 if (move.ReadValue<Vector2>().x < 0)
                 {
                     ScreenWarp("left");
@@ -125,7 +167,7 @@ public class PlayerMovement : MonoBehaviour
             else if (Math.Abs(transform.position.y) == (this.GetComponent<boundaries>().getBounds().y - (transform.GetComponent<SpriteRenderer>().bounds.size.y / 2))
                 && Math.Abs(transform.position.y + move.ReadValue<Vector2>().y) > (this.GetComponent<boundaries>().getBounds().y - (transform.GetComponent<SpriteRenderer>().bounds.size.y / 2)))
             {
-                //Debug.Log("Screenwarping");
+                Debug.Log("Screenwarping Vertical");
                 if (move.ReadValue<Vector2>().y < 0)
                 {
                     ScreenWarp("bottom");
@@ -134,6 +176,11 @@ public class PlayerMovement : MonoBehaviour
                 {
                     ScreenWarp("top");
                 }
+            }
+            else
+            {
+                sword.SetActive(true);
+
             }
         }
     }
