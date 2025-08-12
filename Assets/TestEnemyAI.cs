@@ -7,13 +7,13 @@ public class TestEnemyAI : MonoBehaviour
     public Rigidbody2D rb;
     Vector2 moveDirection = Vector2.zero;
 
-    public float moveSpeed = 1f;
-    public float maxHealth;
-    public float knockbackBaseSpeed;
+    public float moveSpeed;
+    // float maxHealth;
+    //public float knockbackBaseSpeed;
 
-    private float currentHealth;
-    private float damaged; //used to check for recent instances of damage
-    private float lostControl; //controls duration of knockback
+    //private float currentHealth;
+    //private float damaged; //used to check for recent instances of damage
+    //private float lostControl; //controls duration of knockback
 
 
     public GameObject target;
@@ -21,8 +21,8 @@ public class TestEnemyAI : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        damaged = -1;
-        currentHealth = maxHealth;
+        //damaged = -1;
+        //currentHealth = maxHealth;
     }
 
     // Update is called once per frame
@@ -37,7 +37,7 @@ public class TestEnemyAI : MonoBehaviour
         //rb.velocity = new Vector2(moveDirection.x * moveSpeed, moveDirection.y * moveSpeed);
 
 
-        if (lostControl > 0)
+        /*if (lostControl > 0)
         {
             lostControl -= Time.deltaTime;
         }
@@ -52,9 +52,9 @@ public class TestEnemyAI : MonoBehaviour
                 //transform.rotation = Quaternion.LookRotation(new Vector3 (moveDirection.x, moveDirection.y, 0).normalized);
                 transform.rotation = Quaternion.LookRotation(Vector3.back, moveDirection.normalized);
             }
-        }
+        }*/
 
-        if (damaged >= 0)
+        /*if (damaged >= 0)
         {
             damaged += Time.deltaTime;
 
@@ -62,20 +62,30 @@ public class TestEnemyAI : MonoBehaviour
             {
                 damaged = -1;
             }
+        }*/
+        if(GetComponent<Character>().GetControl())
+        {
+            moveDirection.x = target.transform.position.x - transform.position.x;
+            moveDirection.y = target.transform.position.y - transform.position.y;
+            if (moveDirection != Vector2.zero)
+            {
+                //transform.rotation = Quaternion.LookRotation(new Vector3 (moveDirection.x, moveDirection.y, 0).normalized);
+                transform.rotation = Quaternion.LookRotation(Vector3.back, moveDirection.normalized);
+            }
+            moveDirection.Normalize();
+            rb.velocity = new Vector2(moveDirection.x * moveSpeed, moveDirection.y * moveSpeed);
         }
-        moveDirection.Normalize();
-        rb.velocity = new Vector2(moveDirection.x * moveSpeed, moveDirection.y * moveSpeed);
     }
 
-    private void OnTriggerStay2D(Collider2D collision)
+    /*private void OnTriggerStay2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
         {
             collision.GetComponent<PlayerMovement>().TakeDamage(1, 0.1f, 1, this.GetComponent<Collider2D>());
         }
-    }
+    }*/
 
-    public void TakeDamage(float damage, float recoilTime, float recoilMagnitude, Collider2D source)
+    /*public void TakeDamage(float damage, float recoilTime, float recoilMagnitude, Collider2D source)
     {
         if (damaged == -1)
         {
@@ -104,5 +114,5 @@ public class TestEnemyAI : MonoBehaviour
     public void Die()
     {
         gameObject.SetActive(false);
-    }
+    }*/
 }

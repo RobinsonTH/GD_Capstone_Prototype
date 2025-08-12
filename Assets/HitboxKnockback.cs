@@ -2,11 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Hitbox : MonoBehaviour
+public class HitboxKnockback : MonoBehaviour
 {
-    /*public float damage;
-    public float recoilTime;
-    public float recoilMagnitude;
+    public float time;
+    public float magnitude;
     public string targetTag;
 
     // Start is called before the first frame update
@@ -25,7 +24,7 @@ public class Hitbox : MonoBehaviour
     {
         if (collision.CompareTag(targetTag))
         {
-           collision.GetComponent<TestEnemyAI>().TakeDamage(damage, recoilTime, recoilMagnitude, this.GetComponent<Collider2D>());
+           collision.GetComponent<Knockback>().TakeKnockback(time, magnitude, this.GetComponent<Collider2D>());
         }
-    }*/
+    }
 }

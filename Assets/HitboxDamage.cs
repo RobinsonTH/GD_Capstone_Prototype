@@ -2,11 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Hitbox : MonoBehaviour
+public class HitboxDamage : MonoBehaviour
 {
-    /*public float damage;
-    public float recoilTime;
-    public float recoilMagnitude;
+    public float damage;
     public string targetTag;
 
     // Start is called before the first frame update
@@ -18,14 +16,15 @@ public class Hitbox : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     private void OnTriggerStay2D(Collider2D collision)
     {
+        //when this hitbox collides with an opposing hurtbox with a Health component, deal damage
         if (collision.CompareTag(targetTag))
         {
-           collision.GetComponent<TestEnemyAI>().TakeDamage(damage, recoilTime, recoilMagnitude, this.GetComponent<Collider2D>());
+            collision.GetComponent<Health>().TakeDamage(damage);
         }
-    }*/
+    }
 }
