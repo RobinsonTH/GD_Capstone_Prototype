@@ -872,6 +872,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fac383cc1366ded4d88cd5a56641714c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  equipped: {fileID: 0}
 --- !u!114 &1567821494
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -901,7 +902,7 @@ GameObject:
   - component: {fileID: 1624406151}
   m_Layer: 0
   m_Name: TestObstacle
-  m_TagString: Untagged
+  m_TagString: Environment
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1331,6 +1332,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fac383cc1366ded4d88cd5a56641714c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  equipped: {fileID: 11400000, guid: 3ffa2a9845d8f3248ae2bff9349f8fe6, type: 2}
 --- !u!1 &1769294516
 GameObject:
   m_ObjectHideFlags: 0

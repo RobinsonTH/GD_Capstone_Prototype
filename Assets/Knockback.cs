@@ -33,7 +33,7 @@ public class Knockback : MonoBehaviour
     {
         //Debug.Log("Coroutine in progress");
         //lock out other movement scripts
-        GetComponent<Character>().SetControl(false);
+        GetComponent<Character>().LoseControl();
 
         //set rigidbody trajectory and time based on knockback values
         Vector2 moveDirection = Vector2.zero;
@@ -47,6 +47,6 @@ public class Knockback : MonoBehaviour
 
         //reset trajectory and give back movement control
         rb.velocity = Vector2.zero;
-        GetComponent<Character>().SetControl(true);
+        GetComponent<Character>().GainControl();
     }
 }

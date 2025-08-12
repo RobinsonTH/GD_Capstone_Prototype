@@ -16,6 +16,7 @@ public class PlayerMovement : MonoBehaviour
 
     Vector2 moveDirection = Vector2.zero;
     private InputAction move;
+    private InputAction swing;
     private InputAction fire;
     //private float lostControl; //controls knockback time
 
@@ -33,6 +34,11 @@ public class PlayerMovement : MonoBehaviour
         move = playerControls.Player.Move;
         move.Enable();
 
+        swing = playerControls.Player.Swing;
+        swing.Enable();
+
+        swing.performed += Swing;
+
         fire = playerControls.Player.Fire;
         fire.Enable();
 
@@ -42,6 +48,7 @@ public class PlayerMovement : MonoBehaviour
     private void OnDisable()
     {
         move.Disable();
+        swing.Disable();
         fire.Disable();
     }
 
@@ -114,7 +121,7 @@ public class PlayerMovement : MonoBehaviour
     }*/
 
 
-    void Fire(InputAction.CallbackContext context)
+    void Swing(InputAction.CallbackContext context)
     {
         if (GetComponent<Character>().GetControl())
         {
@@ -150,6 +157,14 @@ public class PlayerMovement : MonoBehaviour
                 sword.SetActive(true);
 
             }
+        }
+    }
+
+    void Fire(InputAction.CallbackContext context)
+    {
+        if (GetComponent<Character>().GetControl())
+        {
+            GetComponent<Character>().FireEquipment();
         }
     }
 
