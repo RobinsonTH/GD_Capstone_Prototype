@@ -33,9 +33,18 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Fire",
+                    "name": "Interact",
                     "type": "Button",
                     "id": "872ee9d0-4a3e-4603-8199-836bd5babe40",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Fire",
+                    "type": "Button",
+                    "id": "84f37124-0868-44c8-9c15-853fe954aead",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -267,6 +276,17 @@
                     "name": "",
                     "id": "6ad226cf-1052-4dab-84fa-04440ecee4e6",
                     "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "dc53c30a-ef24-463c-8854-e483e5c42b39",
+                    "path": "<Mouse>/middleButton",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Keyboard&Mouse",

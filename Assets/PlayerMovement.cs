@@ -16,6 +16,7 @@ public class PlayerMovement : MonoBehaviour
 
     Vector2 moveDirection = Vector2.zero;
     private InputAction move;
+    private InputAction interact;
     private InputAction swing;
     private InputAction fire;
     //private float lostControl; //controls knockback time
@@ -34,14 +35,16 @@ public class PlayerMovement : MonoBehaviour
         move = playerControls.Player.Move;
         move.Enable();
 
+        interact = playerControls.Player.Interact;
+        interact.Enable();
+        interact.performed += Interact;
+
         swing = playerControls.Player.Swing;
         swing.Enable();
-
         swing.performed += Swing;
 
         fire = playerControls.Player.Fire;
         fire.Enable();
-
         fire.performed += Fire;
     }
 
@@ -55,30 +58,13 @@ public class PlayerMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //damaged = -1;
-        //currentHealth = maxHealth;
-        //warp1 = GameObject.Find("WarpEntrance");
-        //warp2 = GameObject.Find("WarpExit");
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        /*if(lostControl > 0)
-        {
-            lostControl -= Time.deltaTime;
-        }
-        else
-        {
-            lostControl = 0;
-            moveSpeed = 4f;
-            moveDirection = move.ReadValue<Vector2>();
-            if (moveDirection != Vector2.zero)
-            {
-                //transform.rotation = Quaternion.LookRotation(new Vector3 (moveDirection.x, moveDirection.y, 0).normalized);
-                transform.rotation = Quaternion.LookRotation(Vector3.forward, moveDirection.normalized);
-            }
-        }*/
+        
 
         if (GetComponent<Character>().GetControl())
         {
@@ -94,32 +80,15 @@ public class PlayerMovement : MonoBehaviour
     }
 
 
-    /*public void TakeDamage(float damage, float recoilTime, float recoilMagnitude, Collider2D source)
+    
+
+    void Interact(InputAction.CallbackContext context)
     {
-        if (damaged == -1)
+        if(GetComponent<DodgeRoll>() != null && moveDirection != Vector2.zero)
         {
-            currentHealth -= damage;
-            if (currentHealth <= 0)
-            {
-                //gameObject.SetActive(false);
-                Die();
-                return;
-            }
-
-            damaged = 0;
-
-            if (recoilTime > 0)
-            {
-                lostControl = recoilTime;
-                //set direction vector to be directly away from damage source
-                moveDirection.x = transform.position.x - source.transform.position.x;
-                moveDirection.y = transform.position.y - source.transform.position.y;
-                moveDirection.Normalize();
-                moveSpeed = knockbackBaseSpeed * recoilMagnitude;
-            }
+            StartCoroutine(GetComponent<DodgeRoll>().Roll());
         }
-    }*/
-
+    }
 
     void Swing(InputAction.CallbackContext context)
     {

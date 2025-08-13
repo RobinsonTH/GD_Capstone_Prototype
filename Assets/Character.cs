@@ -35,6 +35,11 @@ public class Character : MonoBehaviour
         inControl = false;
     }
 
+    public void HoldControl()
+    {
+        inControl = false;
+    }
+
     public void GainControl()
     {
         inControl = true;
