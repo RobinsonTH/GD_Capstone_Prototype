@@ -5,6 +5,7 @@ using UnityEngine;
 public class DodgeRoll : MonoBehaviour
 {
     public AnimationCurve lerpCurve;
+    public float distance;
     public float animSeconds;
     // Start is called before the first frame update
     void Start()
@@ -35,7 +36,7 @@ public class DodgeRoll : MonoBehaviour
 
             currentTime += Time.deltaTime;
             remappedTime = lerpCurve.Evaluate(currentTime);
-            GetComponent<Rigidbody2D>().MovePosition(Vector3.Lerp(startPosition, (startPosition + (transform.up * 3)), remappedTime));
+            GetComponent<Rigidbody2D>().MovePosition(Vector3.Lerp(startPosition, (startPosition + (transform.up * distance)), remappedTime));
 
             yield return null;
         }
