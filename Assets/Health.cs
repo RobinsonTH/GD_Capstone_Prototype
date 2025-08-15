@@ -5,7 +5,10 @@ using UnityEngine;
 public class Health : MonoBehaviour
 {
     public delegate void DamageHandler(float damage);
-    public event DamageHandler onDamage;
+    public event DamageHandler OnDamage;
+
+    public delegate void DeathHandler();
+    public event DeathHandler OnDeath;
 
     public float maxHealth;
     public float currentHealth;
@@ -31,15 +34,23 @@ public class Health : MonoBehaviour
         if (!invincible)
         {
             currentHealth -= damage;
-            if (onDamage != null) { onDamage(damage); }
+            if (OnDamage != null) { OnDamage(damage); }
             if (currentHealth <= 0) { Die(); }
         }
     }    
 
-
+    public void GainHealth(float healing)
+    {
+        currentHealth += healing;
+        if(currentHealth > maxHealth)
+        {
+            currentHealth = maxHealth;
+        }
+    }
 
     public void Die()
     {
+        if (OnDeath != null) { OnDeath(); }
         gameObject.SetActive(false);
     }
 }

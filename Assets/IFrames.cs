@@ -14,7 +14,7 @@ public class IFrames : MonoBehaviour
     {
         if(GetComponent<Health>())
         {
-            GetComponent<Health>().onDamage += InvulnOnHit;
+            GetComponent<Health>().OnDamage += InvulnOnHit;
         }
     }
 
@@ -22,7 +22,7 @@ public class IFrames : MonoBehaviour
     {
         if (GetComponent<Health>())
         {
-            GetComponent<Health>().onDamage -= InvulnOnHit;
+            GetComponent<Health>().OnDamage -= InvulnOnHit;
         }
     }
 
