@@ -21,9 +21,9 @@ public class Room : MonoBehaviour
     {
         if(collision.tag == "Player")
         {
-            Debug.Log("Room height before: " + GetComponent<BoxCollider2D>().size.y);
+            //Debug.Log("Room height before: " + GetComponent<BoxCollider2D>().size.y);
 
-            GetComponentInParent<Dungeon>().SetCameraToRoom(this);
+            StartCoroutine(GetComponentInParent<Dungeon>().SetCameraToRoom(this));
             /*Collider2D room = GetComponent<Collider2D>();
             Camera camera = GetComponentInParent<Dungeon>().GetCamera();
             float screenRatio = Screen.height / Screen.width;

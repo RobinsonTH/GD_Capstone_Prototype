@@ -35,7 +35,7 @@ public class DodgeRoll : MonoBehaviour
             GetComponent<Health>().invincible = true;
 
             currentTime += Time.deltaTime;
-            remappedTime = lerpCurve.Evaluate(currentTime);
+            remappedTime = lerpCurve.Evaluate(currentTime/animSeconds);
             GetComponent<Rigidbody2D>().MovePosition(Vector3.Lerp(startPosition, (startPosition + (transform.up * distance)), remappedTime));
 
             yield return null;
