@@ -15,8 +15,8 @@ TagManager:
   - UI
   - Player
   - Warps
-  - 
-  - 
+  - Environment
+  - Floor
   - 
   - 
   - 
@@ -43,9 +43,15 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Effects
-    uniqueID: 3703901901
+  - name: Floor
+    uniqueID: 2400041445
+    locked: 0
+  - name: Environment
+    uniqueID: 4066233629
     locked: 0
   - name: Player
     uniqueID: 4019975429
+    locked: 0
+  - name: Effects
+    uniqueID: 3703901901
     locked: 0

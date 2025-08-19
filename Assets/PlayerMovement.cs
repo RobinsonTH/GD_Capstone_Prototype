@@ -84,7 +84,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Interact(InputAction.CallbackContext context)
     {
-        if(GetComponent<DodgeRoll>() != null && moveDirection != Vector2.zero)
+        if(GetComponent<DodgeRoll>() != null && moveDirection != Vector2.zero && GetComponent<Character>().GetControl())
         {
             StartCoroutine(GetComponent<DodgeRoll>().Roll());
         }
