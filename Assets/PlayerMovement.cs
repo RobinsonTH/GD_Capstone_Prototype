@@ -97,7 +97,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (moveDirection != Vector2.zero && GetComponent<Character>().GetControl())
         {
-            if (transform.parent.GetComponent<Room>() != null)
+            if (GetComponent<PlayerWarp>() && transform.parent.GetComponent<Room>() != null)
             {
                 Vector2 checkPoint = (Vector2)transform.position + (moveDirection * 0.6f);
                 Collider2D wall = Physics2D.OverlapPoint(checkPoint, LayerMask.GetMask("Wall"));
@@ -117,7 +117,8 @@ public class PlayerMovement : MonoBehaviour
                         //Make sure it's a viable wall and that it's lined up correctly and then move position
                         if (hits.Length > 0 && hits[hits.Length - 1].normal == moveDirection)
                         {
-                            rb.MovePosition(hits[hits.Length - 1].point);
+                            //rb.MovePosition(hits[hits.Length - 1].point);
+                            StartCoroutine(GetComponent<PlayerWarp>().Warp(hits[hits.Length - 1].point, moveDirection));
                         }
                     }
 
