@@ -64,29 +64,74 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        moveDirection = move.ReadValue<Vector2>();
+        if (moveDirection.magnitude > 0.1f)
+        {
+            moveDirection.Normalize();
+
+            float angle = Mathf.Atan2(moveDirection.y, moveDirection.x) * Mathf.Rad2Deg; // Angle in degrees
+            float snappedAngle = Mathf.Round(angle / 45f) * 45f; // Snap to nearest 45 degrees
+
+            moveDirection = new Vector2(Mathf.Cos(snappedAngle * Mathf.Deg2Rad), Mathf.Sin(snappedAngle * Mathf.Deg2Rad));
+        }
+        else
+        {
+            moveDirection = Vector2.zero;
+        }
 
         if (GetComponent<Character>().GetControl())
         {
-            //moveSpeed = 4f;
-            moveDirection = move.ReadValue<Vector2>();
-            if (moveDirection != Vector2.zero)
-            {
-                //transform.rotation = Quaternion.LookRotation(new Vector3 (moveDirection.x, moveDirection.y, 0).normalized);
-                transform.rotation = Quaternion.LookRotation(Vector3.forward, moveDirection.normalized);
-            }
             rb.velocity = new Vector2(moveDirection.x * moveSpeed, moveDirection.y * moveSpeed);
+
+            if(moveDirection != Vector2.zero)
+            {
+                transform.rotation = Quaternion.LookRotation(Vector3.forward, moveDirection);
+            }
         }
     }
 
 
-    
+
 
     void Interact(InputAction.CallbackContext context)
     {
-        if(GetComponent<DodgeRoll>() != null && moveDirection != Vector2.zero && GetComponent<Character>().GetControl())
+        if (moveDirection != Vector2.zero && GetComponent<Character>().GetControl())
         {
-            StartCoroutine(GetComponent<DodgeRoll>().Roll());
+            if (transform.parent.GetComponent<Room>() != null)
+            {
+                Vector2 checkPoint = (Vector2)transform.position + (moveDirection * 0.6f);
+                Collider2D wall = Physics2D.OverlapPoint(checkPoint, LayerMask.GetMask("Wall"));
+                if (wall != null)
+                {
+                    
+                    //get distance to room bounding box directly across
+                    //IntersectRay reverses ray when inside the bounding box in question, so no need to flip signs on moveDirection
+                    float distance;
+                    if(transform.parent.GetComponent<BoxCollider2D>().bounds.IntersectRay(new Ray(transform.position, moveDirection), out distance))
+                    {
+                        //Raycast signs work properly, so flip things back the way they should be
+                        distance = Math.Abs(distance);
+                        RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, -moveDirection, distance, LayerMask.GetMask("Wall"));
+
+                        //If the raycast returns anything, the final hit is on the wall that we need to warp to
+                        //Make sure it's a viable wall and that it's lined up correctly and then move position
+                        if (hits.Length > 0 && hits[hits.Length - 1].normal == moveDirection)
+                        {
+                            rb.MovePosition(hits[hits.Length - 1].point);
+                        }
+                    }
+
+
+                }
+                else if (GetComponent<DodgeRoll>() != null)
+                {
+                    StartCoroutine(GetComponent<DodgeRoll>().Roll());
+                }
+            }
+            else if (GetComponent<DodgeRoll>() != null)
+            {
+                StartCoroutine(GetComponent<DodgeRoll>().Roll());
+            }
         }
     }
 
@@ -95,7 +140,7 @@ public class PlayerMovement : MonoBehaviour
         if (GetComponent<Character>().GetControl())
         {
             //Debug.Log(transform.position.x.ToString() + " " + this.GetComponent<boundaries>().getBounds().x.ToString());
-            if (Math.Abs(transform.position.x) == (this.GetComponent<boundaries>().getBounds().x - (transform.GetComponent<SpriteRenderer>().bounds.size.x / 2))
+            /*if (Math.Abs(transform.position.x) == (this.GetComponent<boundaries>().getBounds().x - (transform.GetComponent<SpriteRenderer>().bounds.size.x / 2))
                 && Math.Abs(transform.position.x + move.ReadValue<Vector2>().x) > (this.GetComponent<boundaries>().getBounds().x - (transform.GetComponent<SpriteRenderer>().bounds.size.x / 2)))
             {
                 Debug.Log("Screenwarping Horizontal");
@@ -122,10 +167,10 @@ public class PlayerMovement : MonoBehaviour
                 }
             }
             else
-            {
+            {*/
                 sword.SetActive(true);
 
-            }
+            //}
         }
     }
 

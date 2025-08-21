@@ -8,7 +8,7 @@ public class Room : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        GetComponent<SpriteRenderer>().enabled = true;
     }
 
     // Update is called once per frame
@@ -19,15 +19,20 @@ public class Room : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.tag == "Player")
+        if(collision.tag == "PlayerOrigin")
         {
-            //Debug.Log("Room height before: " + GetComponent<BoxCollider2D>().size.y);
-
+            collision.transform.parent.SetParent(gameObject.transform, true);
+            GetComponent<SpriteRenderer>().enabled = false;
             StartCoroutine(GetComponentInParent<Dungeon>().SetCameraToRoom(this));
-            /*Collider2D room = GetComponent<Collider2D>();
-            Camera camera = GetComponentInParent<Dungeon>().GetCamera();
-            float screenRatio = Screen.height / Screen.width;
-            float roomRatio = room.bounds.size.y/room.bounds.size.x;*/
+        }
+
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.tag == "PlayerOrigin")
+        {
+            GetComponent<SpriteRenderer>().enabled = true;
         }
 
     }

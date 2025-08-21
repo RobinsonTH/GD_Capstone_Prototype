@@ -20,7 +20,7 @@ public class HitboxDestroy : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.CompareTag(targetTag) || collision.CompareTag("Environment"))
+        if (collision.CompareTag(targetTag) || collision.CompareTag("Environment") || collision.CompareTag("Wall"))
         {
             Destroy(gameObject);
         }

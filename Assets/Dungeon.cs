@@ -8,6 +8,7 @@ public class Dungeon : MonoBehaviour
     public Camera cam;
     public AnimationCurve lerp;
     public float panDuration;
+    public int collectedKeys = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -61,6 +62,19 @@ public class Dungeon : MonoBehaviour
             cam.transform.position = Vector3.Lerp(startPosition, room.transform.position, remappedTime);
             cam.orthographicSize = startSize + ((targetSize - startSize) * remappedTime);
             yield return null;
+        }
+    }
+
+    public bool UnlockDoor()
+    {
+        if(collectedKeys > 0)
+        {
+            collectedKeys--;
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 }

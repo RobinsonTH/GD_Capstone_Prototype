@@ -6,10 +6,11 @@ using UnityEngine;
 public class Bow : Equipment
 {
     public Rigidbody2D projectile;
+    public float delaySeconds;
 
     public override void OnEquip()
     {
-        Debug.Log("Equipped Bow");
+        //Debug.Log("Equipped Bow");
     }
 
     public override void OnUnequip()
@@ -21,7 +22,7 @@ public class Bow : Equipment
     {
         //lock controls/movement, then wait
         source.LoseControl();
-        yield return new WaitForSeconds(0.33f);
+        yield return new WaitForSeconds(delaySeconds);
 
         //Spawn an arrow, then give back control. Projectile behavior is kept in the arrow object.
         Instantiate(projectile, source.transform.position, source.transform.rotation);

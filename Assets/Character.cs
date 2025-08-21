@@ -5,6 +5,7 @@ using UnityEngine;
 public class Character : MonoBehaviour
 {
     public Equipment equipped;
+    private Coroutine firingEquipment;
 
     private bool inControl = true;
     // Start is called before the first frame update
@@ -21,7 +22,18 @@ public class Character : MonoBehaviour
 
     private void OnEnable()
     {
-        
+        if(GetComponent<Health>())
+        {
+            GetComponent<Health>().OnDamage += InterruptEquipment;
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (GetComponent<Health>())
+        {
+            GetComponent<Health>().OnDamage -= InterruptEquipment;
+        }
     }
 
     public bool GetControl()
@@ -54,6 +66,14 @@ public class Character : MonoBehaviour
 
     public void FireEquipment()
     {
-        if (equipped != null) { StartCoroutine(equipped.Fire(this)); }
+        if (equipped != null) { firingEquipment = StartCoroutine(equipped.Fire(this)); }
+    }
+
+    public void InterruptEquipment(float damage)
+    {
+        if (equipped != null && firingEquipment != null && equipped.interruptable)
+        {
+            StopCoroutine(firingEquipment);
+        }
     }
 }

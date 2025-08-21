@@ -30,6 +30,6 @@ public class DropOnDeath : MonoBehaviour
 
     public void Drop()
     {
-        Instantiate(drop, transform.position, Quaternion.identity);
+        Instantiate(drop, transform.position, Quaternion.identity, transform.parent);
     }
 }

@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 6918423986528413831}
   - component: {fileID: 8607692260556666833}
   m_Layer: 10
-  m_Name: PlayerArrow
+  m_Name: EnemyArrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -176,7 +176,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   time: 0.1
   magnitude: 0.5
-  targetTag: Enemy
+  targetTag: Player
 --- !u!114 &1767304162075276755
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -190,7 +190,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 1
-  targetTag: Enemy
+  targetTag: Player
 --- !u!114 &6918423986528413831
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -217,4 +217,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 331e43f1f360051458f9070e731a0331, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetTag: Enemy
+  targetTag: Player
