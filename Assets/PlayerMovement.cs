@@ -109,9 +109,9 @@ public class PlayerMovement : MonoBehaviour
                     float distance;
                     if(transform.parent.GetComponent<BoxCollider2D>().bounds.IntersectRay(new Ray(transform.position, moveDirection), out distance))
                     {
-                        //Raycast signs work properly, so flip things back the way they should be
+                        //Raycast signs work properly, so flip things back the way they should be. Slightly reduce distance to ensure you don't hit the next room over.
                         distance = Math.Abs(distance);
-                        RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, -moveDirection, distance, LayerMask.GetMask("Wall"));
+                        RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, -moveDirection, 0.99f*distance, LayerMask.GetMask("Wall"));
 
                         //If the raycast returns anything, the final hit is on the wall that we need to warp to
                         //Make sure it's a viable wall and that it's lined up correctly and then move position

@@ -41,7 +41,7 @@ public class PlayerWarp : MonoBehaviour
 
         //Instantiate two portal objects at start and end points
         Instantiate(portal, ((Vector3)transform.position + (Vector3)(0.5f * moveDirection)), transform.rotation); //close portal
-        Instantiate(portal, targetPosition, transform.rotation); //far portal
+        Instantiate(portal, targetPosition, (transform.rotation * Quaternion.Euler(0, 0, 180f))); //far portal
 
         //Wait while portal grows
         yield return new WaitForSeconds(0.25f * duration);
@@ -50,7 +50,7 @@ public class PlayerWarp : MonoBehaviour
         while(timer <= 0.25f * duration)
         {
             timer += Time.deltaTime;
-            transform.position = Vector2.Lerp(startPosition, (startPosition + 0.5f * moveDirection), (timer / (0.25f * duration)));
+            transform.position = Vector2.Lerp(startPosition, (startPosition + moveDirection), (timer / (0.25f * duration)));
             yield return null;
         }
 
@@ -58,14 +58,14 @@ public class PlayerWarp : MonoBehaviour
         transform.position = targetPosition;
 
         timer = 0f;
-        startPosition = targetPosition;
+        startPosition = targetPosition - 0.5f * moveDirection;
 
 
         //Exit portal
         while (timer <= 0.25f * duration)
         {
             timer += Time.deltaTime;
-            transform.position = Vector2.Lerp(startPosition, (startPosition + 0.5f * moveDirection), (timer / (0.25f * duration)));
+            transform.position = Vector2.Lerp(startPosition, (startPosition + moveDirection), (timer / (0.25f * duration)));
             yield return null;
         }
 

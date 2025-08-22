@@ -48,8 +48,14 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Wall
+    uniqueID: 3451028667
+    locked: 0
   - name: Environment
     uniqueID: 4066233629
+    locked: 0
+  - name: Effects Under
+    uniqueID: 2284537383
     locked: 0
   - name: Enemy
     uniqueID: 3974689489
@@ -57,12 +63,12 @@ TagManager:
   - name: Player
     uniqueID: 4019975429
     locked: 0
-  - name: Wall
-    uniqueID: 3451028667
-    locked: 0
   - name: Effects
     uniqueID: 3703901901
     locked: 0
   - name: Mask
     uniqueID: 1207606569
+    locked: 0
+  - name: HUD
+    uniqueID: 376595069
     locked: 0
