@@ -20,12 +20,23 @@ public class Bow : Equipment
 
     public override IEnumerator Fire(Character source)
     {
+        if(source.GetComponent<PlayerInventory>() &&  source.GetComponent<PlayerInventory>().GetArrows() <= 0)
+        {
+            yield break;
+        }
+
         //lock controls/movement, then wait
         source.LoseControl();
         yield return new WaitForSeconds(delaySeconds);
 
         //Spawn an arrow, then give back control. Projectile behavior is kept in the arrow object.
         Instantiate(projectile, source.transform.position, source.transform.rotation);
+
+        if (source.GetComponent<PlayerInventory>())
+        {
+            source.GetComponent<PlayerInventory>().ShootArrow();
+        }
+
         source.GainControl();
     }
 }
