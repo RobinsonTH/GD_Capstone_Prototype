@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class HitboxDamage : MonoBehaviour
 {
-    public float damage;
+    public int damage;
     public string targetTag;
 
     // Start is called before the first frame update

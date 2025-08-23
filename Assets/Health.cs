@@ -4,14 +4,17 @@ using UnityEngine;
 
 public class Health : MonoBehaviour
 {
-    public delegate void DamageHandler(float damage);
+    public delegate void HealthChangeHandler(int delta);
+    public event HealthChangeHandler OnHealthChange;
+
+    public delegate void DamageHandler(int damage);
     public event DamageHandler OnDamage;
 
     public delegate void DeathHandler();
     public event DeathHandler OnDeath;
 
-    public float maxHealth;
-    public float currentHealth;
+    public int maxHealth;
+    public int currentHealth;
     public bool invincible;
 
     // Start is called before the first frame update
@@ -29,23 +32,29 @@ public class Health : MonoBehaviour
     
 
 
-    public void TakeDamage(float damage)
+    public void TakeDamage(int damage)
     {
         if (!invincible)
         {
             currentHealth -= damage;
             if (OnDamage != null) { OnDamage(damage); }
+            if (OnHealthChange != null) { OnHealthChange(-damage); }
             if (currentHealth <= 0) { Die(); }
         }
     }    
 
-    public void GainHealth(float healing)
+    public void GainHealth(int healing)
     {
-        currentHealth += healing;
-        if(currentHealth > maxHealth)
+        if(currentHealth < maxHealth)
         {
-            currentHealth = maxHealth;
+            currentHealth += healing;
+            if (currentHealth > maxHealth)
+            {
+                currentHealth = maxHealth;
+            }
+            if (OnHealthChange != null) { OnHealthChange(healing); }
         }
+        
     }
 
     public void Die()

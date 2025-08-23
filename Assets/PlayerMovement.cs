@@ -8,21 +8,18 @@ using UnityEngine.InputSystem;
 public class PlayerMovement : MonoBehaviour
 {
     public Rigidbody2D rb;
-    //public GameObject spriteHandler;
     public PlayerInputActions playerControls;
 
     public float moveSpeed;
-    //public float knockbackBaseSpeed;
 
     Vector2 moveDirection = Vector2.zero;
     private InputAction move;
     private InputAction interact;
     private InputAction swing;
     private InputAction fire;
-    //private float lostControl; //controls knockback time
 
-    public GameObject warp1;
-    public GameObject warp2;
+    //public GameObject warp1;
+    //public GameObject warp2;
     public GameObject sword;
 
     private void Awake()
@@ -140,38 +137,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (GetComponent<Character>().GetControl())
         {
-            //Debug.Log(transform.position.x.ToString() + " " + this.GetComponent<boundaries>().getBounds().x.ToString());
-            /*if (Math.Abs(transform.position.x) == (this.GetComponent<boundaries>().getBounds().x - (transform.GetComponent<SpriteRenderer>().bounds.size.x / 2))
-                && Math.Abs(transform.position.x + move.ReadValue<Vector2>().x) > (this.GetComponent<boundaries>().getBounds().x - (transform.GetComponent<SpriteRenderer>().bounds.size.x / 2)))
-            {
-                Debug.Log("Screenwarping Horizontal");
-                if (move.ReadValue<Vector2>().x < 0)
-                {
-                    ScreenWarp("left");
-                }
-                else
-                {
-                    ScreenWarp("right");
-                }
-            }
-            else if (Math.Abs(transform.position.y) == (this.GetComponent<boundaries>().getBounds().y - (transform.GetComponent<SpriteRenderer>().bounds.size.y / 2))
-                && Math.Abs(transform.position.y + move.ReadValue<Vector2>().y) > (this.GetComponent<boundaries>().getBounds().y - (transform.GetComponent<SpriteRenderer>().bounds.size.y / 2)))
-            {
-                Debug.Log("Screenwarping Vertical");
-                if (move.ReadValue<Vector2>().y < 0)
-                {
-                    ScreenWarp("bottom");
-                }
-                else
-                {
-                    ScreenWarp("top");
-                }
-            }
-            else
-            {*/
                 sword.SetActive(true);
-
-            //}
         }
     }
 
@@ -180,37 +146,6 @@ public class PlayerMovement : MonoBehaviour
         if (GetComponent<Character>().GetControl())
         {
             GetComponent<Character>().FireEquipment();
-        }
-    }
-
-    private void ScreenWarp(string direction)
-    {
-        //x is false
-        //y is true
-        if (!warp1.activeSelf && !warp2.activeSelf)
-        {
-            warp1.SetActive(true);
-            warp2.SetActive(true);
-
-            //lostControl = 1.5f;
-            moveDirection = Vector3.zero;
-
-            if (direction == "left" || direction == "right")
-            {
-                warp1.GetComponent<WarpAnimation>().StartAnimation(new Vector3(this.GetComponent<boundaries>().getBounds().x, transform.position.y, 0));
-                warp2.GetComponent<WarpAnimation>().StartAnimation(new Vector3(this.GetComponent<boundaries>().getBounds().x * -1, transform.position.y, 0));
-                //transform.position = new Vector3(transform.position.x * -1, transform.position.y, 0);
-
-            }
-            else
-            {
-                warp1.GetComponent<WarpAnimation>().StartAnimation(new Vector3(transform.position.x, this.GetComponent<boundaries>().getBounds().y, 0));
-                warp2.GetComponent<WarpAnimation>().StartAnimation(new Vector3(transform.position.x, this.GetComponent<boundaries>().getBounds().y * -1, 0));
-                //transform.position = new Vector3(transform.position.x, transform.position.y * -1, 0);
-            }
-            //spriteHandler.GetComponent<WarpSprite>().StartAnimation(direction);
-            //RE-ENABLE THIS LATER
-
         }
     }
 }

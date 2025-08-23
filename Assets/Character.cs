@@ -69,7 +69,7 @@ public class Character : MonoBehaviour
         if (equipped != null) { firingEquipment = StartCoroutine(equipped.Fire(this)); }
     }
 
-    public void InterruptEquipment(float damage)
+    public void InterruptEquipment(int damage)
     {
         if (equipped != null && firingEquipment != null && equipped.interruptable)
         {
