@@ -15,7 +15,7 @@ public class Health : MonoBehaviour
 
     public int maxHealth;
     public int currentHealth;
-    public bool invincible;
+    public bool invincible = false;
 
     // Start is called before the first frame update
     void Start()
@@ -29,8 +29,13 @@ public class Health : MonoBehaviour
         
     }
 
-    
+    private void OnEnable()
+    {
+        GainHealth(maxHealth);
+        invincible = false;
+    }
 
+    
 
     public void TakeDamage(int damage)
     {

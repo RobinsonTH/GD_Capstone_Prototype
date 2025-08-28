@@ -7,10 +7,7 @@ public class TestEnemyAI : MonoBehaviour
     public Rigidbody2D rb;
     private Character character;
     Vector2 moveDirection = Vector2.zero;
-
     public float moveSpeed;
-
-
     public GameObject target;
 
     // Start is called before the first frame update

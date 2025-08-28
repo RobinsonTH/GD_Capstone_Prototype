@@ -30,6 +30,18 @@ public class DropOnDeath : MonoBehaviour
 
     public void Drop()
     {
-        Instantiate(drop, transform.position, Quaternion.identity, transform.parent);
+        if (drop != null)
+        {
+            if (drop.GetComponent<PickupKey>())
+            {
+                drop.gameObject.SetActive(true);
+                drop.transform.position = transform.position;
+                drop.transform.parent = transform.parent;
+            }
+            else
+            {
+                Instantiate(drop, transform.position, Quaternion.identity, transform.parent);
+            }
+        }
     }
 }

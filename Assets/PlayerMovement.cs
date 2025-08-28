@@ -5,10 +5,11 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+[System.Serializable]
 public class PlayerMovement : MonoBehaviour
 {
     public Rigidbody2D rb;
-    public PlayerInputActions playerControls;
+    //public PlayerInputActions playerControls;
 
     public float moveSpeed;
 
@@ -22,25 +23,30 @@ public class PlayerMovement : MonoBehaviour
     //public GameObject warp2;
     public GameObject sword;
 
+    private Vector2 startPosition;
+
     private void Awake()
     {
-        playerControls = new PlayerInputActions();
+        //playerControls = new PlayerInputActions();
+        startPosition = transform.position;
     }
 
     private void OnEnable()
     {
-        move = playerControls.Player.Move;
+        transform.position = startPosition;
+
+        move = InputManager.Actions.Player.Move;
         move.Enable();
 
-        interact = playerControls.Player.Interact;
+        interact = InputManager.Actions.Player.Interact;
         interact.Enable();
         interact.performed += Interact;
 
-        swing = playerControls.Player.Swing;
+        swing = InputManager.Actions.Player.Swing;
         swing.Enable();
         swing.performed += Swing;
 
-        fire = playerControls.Player.Fire;
+        fire = InputManager.Actions.Player.Fire;
         fire.Enable();
         fire.performed += Fire;
     }

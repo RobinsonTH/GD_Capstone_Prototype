@@ -21,7 +21,7 @@ public class LockedDoor : Door
     {
         if(locked)
         {
-            locked = !transform.parent.parent.GetComponent<Dungeon>().UnlockDoor();
+            locked = !transform.parent.parent.parent.GetComponent<Dungeon>().UnlockDoor();
         }
         return !locked;
     }

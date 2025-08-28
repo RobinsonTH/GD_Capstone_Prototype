@@ -12,7 +12,12 @@ public class IFrames : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if(GetComponent<Health>())
+        
+    }
+
+    private void OnEnable()
+    {
+        if (GetComponent<Health>())
         {
             GetComponent<Health>().OnDamage += InvulnOnHit;
         }

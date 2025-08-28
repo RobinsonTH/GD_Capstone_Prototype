@@ -18,6 +18,6 @@ public class PickupKey : HitboxPickup
 
     protected override void PickupEffect(Collider2D collector, int amount)
     {
-        transform.parent.parent.GetComponent<Dungeon>().collectedKeys++;
+        transform.parent.parent.parent.GetComponent<Dungeon>().collectedKeys++;
     }
 }

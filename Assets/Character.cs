@@ -22,14 +22,17 @@ public class Character : MonoBehaviour
 
     private void OnEnable()
     {
+        inControl = true;
         if(GetComponent<Health>())
         {
             GetComponent<Health>().OnDamage += InterruptEquipment;
         }
+        GetComponent<SpriteRenderer>().enabled = true;
     }
 
     private void OnDisable()
     {
+        inControl = false;
         if (GetComponent<Health>())
         {
             GetComponent<Health>().OnDamage -= InterruptEquipment;
