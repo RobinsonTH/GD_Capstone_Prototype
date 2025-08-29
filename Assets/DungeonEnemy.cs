@@ -13,6 +13,8 @@ public class DungeonEnemy : MonoBehaviour
 
     void OnEnable()
     {
+        //Debug.Log("teleported back to starting position");
+
         transform.position = startPosition;
     }
 

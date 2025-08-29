@@ -20,7 +20,7 @@ public class Floor : MonoBehaviour
     {
         if (collision.tag == "PlayerOrigin")
         {
-            collision.transform.parent.SetParent(gameObject.transform, true);
+            //collision.transform.parent.SetParent(gameObject.transform, true);
             GetComponent<SpriteRenderer>().enabled = false;
             transform.parent.GetComponentInParent<Dungeon>().SetMapCameraToFloor(this);
             //EnableCharacters();

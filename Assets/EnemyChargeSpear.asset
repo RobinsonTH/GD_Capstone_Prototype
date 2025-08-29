@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee39e77c48d11e044a5bfe66441014be, type: 3}
+  m_Name: EnemyChargeSpear
+  m_EditorClassIdentifier: 
+  interruptable: 0
+  weapon: {fileID: 1794548030688215371, guid: f6bc57b6861da474e81f5385e3af953d, type: 3}

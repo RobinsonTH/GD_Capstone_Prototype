@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
 
@@ -7,7 +9,11 @@ public class BehaviorMachine : MonoBehaviour
 {
 
     [SerializeField] private Character character;
+    [SerializeField] private Rigidbody2D rb;
     [SerializeField] private GameObject target;
+    [SerializeField] private AnimationCurve dashCurve;
+    [SerializeField] private float dashSpeed;
+
     private bool isIdle = true;
     private IEnumerator coroutine;
     private enum State
@@ -15,11 +21,13 @@ public class BehaviorMachine : MonoBehaviour
         Move,
         AcquireTarget,
         Fire,
+        RandomDash,
         Wait
     }
 
-    [SerializeField] private State state;
-    private int iterator = 0;
+    [SerializeField] private State startState;
+    private State state = State.AcquireTarget;
+    private int iterator = 1;
 
     // Start is called before the first frame update
     void Start()
@@ -29,7 +37,9 @@ public class BehaviorMachine : MonoBehaviour
 
     private void OnEnable()
     {
-        state = State.AcquireTarget;
+        state = startState;
+        iterator = 1;
+        isIdle = true;
     }
 
     // Update is called once per frame
@@ -42,27 +52,35 @@ public class BehaviorMachine : MonoBehaviour
                 case State.Move:
                     break;
                 case State.AcquireTarget:
-                    coroutine = AcquireTarget(2.0f);
+                    coroutine = AcquireTarget(0.1f);
                     state = State.Fire;
                     iterator = 0;
                     break;
                 case State.Fire:
                     coroutine = character.equipped.Fire(character);
-                    if (iterator >= 3) 
+                    if (iterator >= 1) 
                     { 
+                        state = State.RandomDash;
+                        iterator = 0;
+                    }
+                    break;
+                case State.RandomDash:
+                    coroutine = RandomDash(dashSpeed, 0.5f);
+                    if (iterator >= 3)
+                    {
                         state = State.AcquireTarget;
                         iterator = 0;
                     }
                     break;
                 case State.Wait:
-                    coroutine = Wait(2.0f);
-                    state = State.Fire;
+                    coroutine = Wait(1.5f);
+                    state = State.RandomDash;
                     break;
                 default:
                     break;
             }
-            Debug.Log("State Machine reached a decision. Iterator = " + iterator);
-            Debug.Log("Current State is " + state.ToString());
+            //Debug.Log("State Machine reached a decision. Iterator = " + iterator);
+            //Debug.Log("Current State is " + state.ToString());
             StartCoroutine(WrapperCoroutine(coroutine));
         }
     }
@@ -82,7 +100,7 @@ public class BehaviorMachine : MonoBehaviour
 
     private IEnumerator AcquireTarget(float delaySeconds)
     {
-        float t = 0;
+        float t = 0f;
         Vector2 moveDirection = Vector2.zero;
         while (t <= delaySeconds)
         {
@@ -97,5 +115,26 @@ public class BehaviorMachine : MonoBehaviour
             }
             yield return null;
         }
+    }
+
+    private IEnumerator RandomDash(float speed, float seconds)
+    {
+        Vector2 dir = UnityEngine.Random.insideUnitCircle.normalized;
+        float t = 0f;
+        transform.rotation = Quaternion.LookRotation(Vector3.back, dir);
+        while (t <= seconds)
+        {
+            t += Time.deltaTime;
+            if (character.GetControl())
+            {
+                rb.velocity = dir * speed * dashCurve.Evaluate(t / seconds);
+            }
+            else
+            {
+                yield return new WaitForSeconds(0.5f);
+            }
+            yield return null;
+        }
+        rb.velocity = Vector3.zero;
     }
 }
