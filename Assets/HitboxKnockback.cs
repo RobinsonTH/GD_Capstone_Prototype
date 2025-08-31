@@ -6,7 +6,7 @@ public class HitboxKnockback : MonoBehaviour
 {
     public float time;
     public float magnitude;
-    public string targetTag;
+    //public string targetTag;
 
     // Start is called before the first frame update
     void Start()
@@ -22,9 +22,14 @@ public class HitboxKnockback : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.CompareTag(targetTag))
-        {
-           collision.GetComponent<Knockback>().TakeKnockback(time, magnitude, this.GetComponent<Collider2D>());
-        }
+        //if (collision.CompareTag(targetTag))
+        //{
+            //Knockback knockback = collision.GetComponentInParent<Knockback>();
+            //collision.GetComponentInParent<Knockback>()?.TakeKnockback(time, magnitude, GetComponent<Collider2D>());
+            //Debug.Log("Knocking Back");
+        //}
+
+            //Debug.Log(gameObject.GetComponent<Collider2D>().ToString());
+        collision.GetComponentInParent<Knockback>()?.TakeKnockback(time, magnitude, GetComponent<Collider2D>());
     }
 }

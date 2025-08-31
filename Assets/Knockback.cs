@@ -7,11 +7,29 @@ public class Knockback : MonoBehaviour
 {
     public Rigidbody2D rb;
     public float baseKnockback;
+
+    private bool isMoving;
+
     // Start is called before the first frame update
     void Start()
     {
         
     }
+
+    private void OnEnable()
+    {
+        isMoving = false;
+    }
+
+    private void OnDisable()
+    {
+        if(isMoving)
+        {
+            rb.GetComponent<Character>().GainControl();
+            isMoving = false;
+        }
+    }
+
 
     // Update is called once per frame
     void Update()
@@ -23,8 +41,9 @@ public class Knockback : MonoBehaviour
     public void TakeKnockback(float time, float magnitude, Collider2D source)
     {
         //Debug.Log("Starting Coroutine");
-        if (gameObject.activeSelf && !GetComponent<Health>().invincible)
+        if (gameObject.activeSelf && !GetComponentInParent<Health>().invincible)
         {
+            //Debug.Log(time + " " + magnitude);
             StartCoroutine(Push(time, magnitude, source));
         }
     }
@@ -33,13 +52,14 @@ public class Knockback : MonoBehaviour
     {
         //Debug.Log("Coroutine in progress");
         //lock out other movement scripts
-        GetComponent<Character>().LoseControl();
+        rb.GetComponent<Character>().LoseControl();
+        isMoving = true;
 
         //set rigidbody trajectory and time based on knockback values
         Vector2 moveDirection = Vector2.zero;
         float moveSpeed;
-        moveDirection.x = transform.position.x - source.transform.position.x;
-        moveDirection.y = transform.position.y - source.transform.position.y;
+        moveDirection.x = rb.transform.position.x - source.transform.position.x;
+        moveDirection.y = rb.transform.position.y - source.transform.position.y;
         moveDirection.Normalize();
         moveSpeed = baseKnockback * magnitude;
         rb.velocity = new Vector2(moveDirection.x * moveSpeed, moveDirection.y * moveSpeed);
@@ -47,6 +67,7 @@ public class Knockback : MonoBehaviour
 
         //reset trajectory and give back movement control
         rb.velocity = Vector2.zero;
-        GetComponent<Character>().GainControl();
+        rb.GetComponent<Character>().GainControl();
+        isMoving = false;
     }
 }

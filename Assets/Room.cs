@@ -9,10 +9,14 @@ public class Room : MonoBehaviour
     private bool explored;
     private bool active;
 
+    private void Awake()
+    {
+        characters = PopulateCharacterList();
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-        characters = GetCharacterList();
         GetComponent<SpriteRenderer>().enabled = true;
         DisableCharacters();
         //Debug.Log("Start+Disable");
@@ -51,7 +55,7 @@ public class Room : MonoBehaviour
 
     }
 
-    private Character[] GetCharacterList()
+    private Character[] PopulateCharacterList()
     {
         return GetComponentsInChildren<Character>();
     }
@@ -70,6 +74,11 @@ public class Room : MonoBehaviour
         {
             character.gameObject.SetActive(true);
         }
+    }
+
+    public Character[] GetCharacterList()
+    {
+        return characters;
     }
 
     public bool IsExplored()

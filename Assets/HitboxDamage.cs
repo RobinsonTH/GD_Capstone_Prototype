@@ -24,7 +24,7 @@ public class HitboxDamage : MonoBehaviour
         //when this hitbox collides with an opposing hurtbox with a Health component, deal damage
         if (collision.CompareTag(targetTag))
         {
-            collision.GetComponent<Health>().TakeDamage(damage);
+            collision.GetComponentInParent<Health>()?.TakeDamage(damage);
         }
     }
 }

@@ -18,10 +18,12 @@ public class PlayerMovement : MonoBehaviour
     private InputAction interact;
     private InputAction swing;
     private InputAction fire;
+    private InputAction block;
 
     //public GameObject warp1;
     //public GameObject warp2;
     public GameObject sword;
+    [SerializeField] private GameObject shield;
 
     private Vector2 startPosition;
 
@@ -49,6 +51,12 @@ public class PlayerMovement : MonoBehaviour
         fire = InputManager.Actions.Player.Fire;
         fire.Enable();
         fire.performed += Fire;
+
+        block = InputManager.Actions.Player.Block;
+        block.Enable();
+        block.performed += RaiseShield;
+        //block.canceled += DropShield;
+
     }
 
     private void OnDisable()
@@ -56,6 +64,7 @@ public class PlayerMovement : MonoBehaviour
         move.Disable();
         swing.Disable();
         fire.Disable();
+        block.Disable();
     }
 
     // Start is called before the first frame update
@@ -84,7 +93,10 @@ public class PlayerMovement : MonoBehaviour
 
         if (GetComponent<Character>().GetControl())
         {
-            rb.velocity = new Vector2(moveDirection.x * moveSpeed, moveDirection.y * moveSpeed);
+            if (!shield.activeSelf)
+            {
+                rb.velocity = new Vector2(moveDirection.x * moveSpeed, moveDirection.y * moveSpeed);
+            }
 
             if(moveDirection != Vector2.zero)
             {
@@ -141,7 +153,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Swing(InputAction.CallbackContext context)
     {
-        if (GetComponent<Character>().GetControl())
+        if (GetComponent<Character>().GetControl() && !shield.activeSelf)
         {
                 sword.SetActive(true);
         }
@@ -149,9 +161,35 @@ public class PlayerMovement : MonoBehaviour
 
     void Fire(InputAction.CallbackContext context)
     {
-        if (GetComponent<Character>().GetControl())
+        if (GetComponent<Character>().GetControl() && !shield.activeSelf)
         {
             GetComponent<Character>().FireEquipment();
+        }
+    }
+
+    void RaiseShield(InputAction.CallbackContext context)
+    {
+        if (GetComponent<Character>().GetControl())
+        {
+            rb.velocity = Vector3.zero;
+            shield.SetActive(true);
+            block.canceled += DropShield;
+            GetComponent<Health>().OnDamage += DropShield;
+        }
+    }
+
+    void DropShield(InputAction.CallbackContext context)
+    {
+        DropShield(0);
+    }
+
+    void DropShield(int damage)
+    {
+        if(shield.activeSelf)
+        {
+            shield.SetActive(false);
+            block.canceled -= DropShield;
+            GetComponent<Health>().OnDamage -= DropShield;
         }
     }
 }

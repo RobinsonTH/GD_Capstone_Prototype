@@ -31,6 +31,16 @@ public class Door : MonoBehaviour
         }
     }
 
+    public void Lock()
+    {
+        locked = true;
+    }
+
+    public void Unlock()
+    {
+        locked = false;
+    }
+
     protected virtual bool Open()
     {
         return !locked;

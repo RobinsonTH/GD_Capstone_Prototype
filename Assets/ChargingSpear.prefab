@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 8123292016462084814}
   - component: {fileID: 7179073393504330257}
   - component: {fileID: 7609417996200699704}
-  - component: {fileID: 6382315285263165930}
   - component: {fileID: 3777886174716040118}
+  - component: {fileID: 6382315285263165930}
   - component: {fileID: 5203678958414367398}
   m_Layer: 0
   m_Name: ChargingSpear
@@ -78,8 +78,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -320277807
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 06831756faa9dd142a520f925f168235, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -137,6 +137,21 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &3777886174716040118
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1794548030688215371}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ade85bc1871723941a5f45af6e810a83, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  time: 0.2
+  magnitude: 2
+  targetTag: Player
 --- !u!114 &6382315285263165930
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -150,21 +165,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 1
-  targetTag: Player
---- !u!114 &3777886174716040118
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1794548030688215371}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ade85bc1871723941a5f45af6e810a83, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  time: 0.1
-  magnitude: 4
   targetTag: Player
 --- !u!114 &5203678958414367398
 MonoBehaviour:

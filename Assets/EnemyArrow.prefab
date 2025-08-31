@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 1767304162075276755}
   - component: {fileID: 6918423986528413831}
   - component: {fileID: 8607692260556666833}
-  m_Layer: 10
+  m_Layer: 12
   m_Name: EnemyArrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -132,7 +132,7 @@ BoxCollider2D:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4096
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
@@ -176,7 +176,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   time: 0.1
   magnitude: 0.5
-  targetTag: Player
 --- !u!114 &1767304162075276755
 MonoBehaviour:
   m_ObjectHideFlags: 0

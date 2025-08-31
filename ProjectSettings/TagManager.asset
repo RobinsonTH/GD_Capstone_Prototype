@@ -8,6 +8,9 @@ TagManager:
   - Environment
   - PlayerOrigin
   - Wall
+  - EnemyOrigin
+  - Player Melee
+  - Shield
   layers:
   - Default
   - TransparentFX
@@ -21,7 +24,7 @@ TagManager:
   - Floor
   - PlayerEffect
   - Wall
-  - 
+  - Enemy
   - 
   - 
   - 
