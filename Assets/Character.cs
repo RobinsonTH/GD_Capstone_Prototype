@@ -27,7 +27,10 @@ public class Character : MonoBehaviour
         {
             GetComponent<Health>().OnDamage += InterruptEquipment;
         }
-        GetComponent<SpriteRenderer>().enabled = true;
+        //if (GetComponent<SpriteRenderer>())
+        //{
+        GetComponentInChildren<SpriteRenderer>().enabled = true;
+        //}
     }
 
     private void OnDisable()

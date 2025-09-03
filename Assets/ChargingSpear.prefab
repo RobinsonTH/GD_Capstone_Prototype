@@ -151,7 +151,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   time: 0.2
   magnitude: 2
-  targetTag: Player
+  targetTags:
+  - Player
+  - Shield
+  - Player Melee
 --- !u!114 &6382315285263165930
 MonoBehaviour:
   m_ObjectHideFlags: 0

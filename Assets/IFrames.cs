@@ -9,6 +9,15 @@ public class IFrames : MonoBehaviour
     public bool flicker;
     public float flickerSpeed;
 
+    private Health health;
+    private SpriteRenderer sprite;
+
+    private void Awake()
+    {
+        health = GetComponent<Health>();
+        sprite = GetComponentInChildren<SpriteRenderer>();
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -17,7 +26,7 @@ public class IFrames : MonoBehaviour
 
     private void OnEnable()
     {
-        if (GetComponent<Health>())
+        if (health != null)
         {
             GetComponent<Health>().OnDamage += InvulnOnHit;
         }
@@ -25,7 +34,7 @@ public class IFrames : MonoBehaviour
 
     private void OnDisable()
     {
-        if (GetComponent<Health>())
+        if (health != null)
         {
             GetComponent<Health>().OnDamage -= InvulnOnHit;
         }
@@ -46,22 +55,23 @@ public class IFrames : MonoBehaviour
     private IEnumerator Invincibility()
     {
         //Debug.Log("Coroutine Started");
-        GetComponent<Health>().invincible = true;
+        health.invincible = true;
         if (flicker)
         {
             float i = 0;
             while (i < seconds)
             {
+                health.invincible = true;
                 i += flickerSpeed;
-                GetComponent<SpriteRenderer>().enabled = !GetComponent<SpriteRenderer>().enabled;
+                sprite.enabled = !sprite.enabled;
                 yield return new WaitForSeconds(flickerSpeed);
             }
-            GetComponent<SpriteRenderer>().enabled = true;
+            sprite.enabled = true;
         }
         else
         {
             yield return new WaitForSeconds(seconds);
         }
-        GetComponent<Health>().invincible = false;
+        health.invincible = false;
     }
 }

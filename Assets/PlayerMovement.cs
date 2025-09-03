@@ -77,30 +77,33 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         moveDirection = move.ReadValue<Vector2>();
-        if (moveDirection.magnitude > 0.1f)
+        if (!sword.activeSelf)
         {
-            moveDirection.Normalize();
-
-            float angle = Mathf.Atan2(moveDirection.y, moveDirection.x) * Mathf.Rad2Deg; // Angle in degrees
-            float snappedAngle = Mathf.Round(angle / 45f) * 45f; // Snap to nearest 45 degrees
-
-            moveDirection = new Vector2(Mathf.Cos(snappedAngle * Mathf.Deg2Rad), Mathf.Sin(snappedAngle * Mathf.Deg2Rad));
-        }
-        else
-        {
-            moveDirection = Vector2.zero;
-        }
-
-        if (GetComponent<Character>().GetControl())
-        {
-            if (!shield.activeSelf)
+            if (moveDirection.magnitude > 0.1f)
             {
-                rb.velocity = new Vector2(moveDirection.x * moveSpeed, moveDirection.y * moveSpeed);
+                moveDirection.Normalize();
+
+                float angle = Mathf.Atan2(moveDirection.y, moveDirection.x) * Mathf.Rad2Deg; // Angle in degrees
+                float snappedAngle = Mathf.Round(angle / 45f) * 45f; // Snap to nearest 45 degrees
+
+                moveDirection = new Vector2(Mathf.Cos(snappedAngle * Mathf.Deg2Rad), Mathf.Sin(snappedAngle * Mathf.Deg2Rad));
+            }
+            else
+            {
+                moveDirection = Vector2.zero;
             }
 
-            if(moveDirection != Vector2.zero)
+            if (GetComponent<Character>().GetControl())
             {
-                transform.rotation = Quaternion.LookRotation(Vector3.forward, moveDirection);
+                if (!shield.activeSelf)
+                {
+                    rb.velocity = new Vector2(moveDirection.x * moveSpeed, moveDirection.y * moveSpeed);
+                }
+
+                if (moveDirection != Vector2.zero)
+                {
+                    transform.rotation = Quaternion.LookRotation(Vector3.forward, moveDirection);
+                }
             }
         }
     }
@@ -110,7 +113,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Interact(InputAction.CallbackContext context)
     {
-        if (moveDirection != Vector2.zero && GetComponent<Character>().GetControl())
+        if (moveDirection != Vector2.zero && GetComponent<Character>().GetControl() && !shield.activeSelf && !sword.activeSelf)
         {
             if (GetComponent<PlayerWarp>() && transform.parent.GetComponent<Room>() != null)
             {
@@ -153,15 +156,16 @@ public class PlayerMovement : MonoBehaviour
 
     void Swing(InputAction.CallbackContext context)
     {
-        if (GetComponent<Character>().GetControl() && !shield.activeSelf)
+        if (GetComponent<Character>().GetControl() && !shield.activeSelf && !sword.activeSelf)
         {
-                sword.SetActive(true);
+            rb.velocity = Vector3.zero;
+            sword.SetActive(true);
         }
     }
 
     void Fire(InputAction.CallbackContext context)
     {
-        if (GetComponent<Character>().GetControl() && !shield.activeSelf)
+        if (GetComponent<Character>().GetControl() && !shield.activeSelf && !sword.activeSelf)
         {
             GetComponent<Character>().FireEquipment();
         }

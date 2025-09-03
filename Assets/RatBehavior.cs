@@ -28,7 +28,7 @@ public class RatBehavior : MonoBehaviour
 
     [SerializeField] private State startState;
     private State state = State.AcquireTarget;
-    private int iterator = 1;
+    private int iterator = 3;
 
     // Start is called before the first frame update
     void Start()
@@ -59,17 +59,18 @@ public class RatBehavior : MonoBehaviour
                     break;
                 case State.Fire:
                     coroutine = character.equipped.Fire(character);
-                    if (iterator >= 1) 
+                    if (iterator <= 0) 
                     { 
                         state = State.RandomDash;
-                        iterator = 0;
+                        iterator = 1;
                     }
                     break;
                 case State.RatScurry:
                     coroutine = RatScurry();
-                    if(iterator >= 3)
+                    if(iterator <= 0)
                     {
                         state = State.Wait;
+                        iterator = 1;
                     }
                     break;
                 case State.RandomDash:
@@ -81,8 +82,9 @@ public class RatBehavior : MonoBehaviour
                     }
                     break;
                 case State.Wait:
-                    coroutine = Wait(1.5f);
+                    coroutine = Wait(UnityEngine.Random.Range(0.5f, 2.0f));
                     state = State.RatScurry;
+                    iterator = UnityEngine.Random.Range(1, 4);
                     break;
                 default:
                     break;
@@ -98,11 +100,12 @@ public class RatBehavior : MonoBehaviour
         isIdle = false;
         yield return StartCoroutine(wrapped);
         isIdle = true;
-        iterator++;
+        iterator--;
     }
 
     private IEnumerator Wait(float delaySeconds)
     {
+
         yield return new WaitForSeconds(delaySeconds);
     }
 
@@ -148,8 +151,10 @@ public class RatBehavior : MonoBehaviour
 
     private IEnumerator RatScurry()
     {
-        float distanceLeft = Physics2D.Raycast(transform.position, -transform.right, 4f, LayerMask.GetMask("Wall")).distance;
-        float distanceRight = Physics2D.Raycast(transform.position, transform.right, 4f, LayerMask.GetMask("Wall")).distance;
+        float time = UnityEngine.Random.Range(0.25f, 0.75f);
+
+        float distanceLeft = Physics2D.Raycast(transform.position, -transform.right, dashSpeed*time, LayerMask.GetMask("Wall")).distance;
+        float distanceRight = Physics2D.Raycast(transform.position, transform.right, dashSpeed*time, LayerMask.GetMask("Wall")).distance;
 
         if (distanceLeft > distanceRight)
         {
@@ -161,23 +166,45 @@ public class RatBehavior : MonoBehaviour
         }
         else
         {
-            transform.Rotate(0f, 0f, UnityEngine.Random.Range(-1, 2) * 90f);
+            //pick left or right at random. Generates -1 or 1.
+            transform.Rotate(0f, 0f, (UnityEngine.Random.Range(0, 2) * 2 - 1) * 90f);
         }
 
+        GetComponentInChildren<Animator>().SetBool("Run", true);
 
-
-            float t = 0;
-        while(t <= 0.75f)
+        float t = 0;
+        bool switchedOnce = false;
+        
+        while(t <= time)
         {
             t += Time.deltaTime;
             if (character.GetControl())
             {
+                //divert course to hit player if they're within range
+                RaycastHit2D leftRay = Physics2D.Raycast(transform.position, -transform.right, dashSpeed * time * (1 - t / time), LayerMask.GetMask("Player"));
+                RaycastHit2D rightRay = Physics2D.Raycast(transform.position, transform.right, dashSpeed * time * (1 - t / time), LayerMask.GetMask("Player"));
+
+                if (!switchedOnce)
+                {
+                    if (leftRay.collider != null && leftRay.collider.CompareTag("Player"))
+                    {
+                        transform.Rotate(0f, 0f, 90f);
+                        switchedOnce = true;
+                    }
+                    else if (rightRay.collider != null && rightRay.collider.CompareTag("Player"))
+                    {
+                        transform.Rotate(0f, 0f, -90f);
+                        switchedOnce = true;
+                    }
+                }
+
+                //maintain velocity as long as in control
                 rb.velocity = transform.up * dashSpeed;
             }
             yield return null;
         }
 
         rb.velocity = Vector2.zero;
-
+        GetComponentInChildren<Animator>().SetBool("Run", false);
     }
 }

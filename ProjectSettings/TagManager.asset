@@ -66,11 +66,11 @@ TagManager:
   - name: Player
     uniqueID: 4019975429
     locked: 0
-  - name: Effects
-    uniqueID: 3703901901
-    locked: 0
   - name: Mask
     uniqueID: 1207606569
+    locked: 0
+  - name: Effects
+    uniqueID: 3703901901
     locked: 0
   - name: HUD
     uniqueID: 376595069
