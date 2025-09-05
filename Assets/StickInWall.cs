@@ -16,6 +16,11 @@ public class StickInWall : MonoBehaviour
         
     }
 
+    private void OnDisable()
+    {
+        Destroy(gameObject);
+    }
+
     private void OnTriggerStay2D(Collider2D collision)
     {
         if(collision.CompareTag("Wall"))

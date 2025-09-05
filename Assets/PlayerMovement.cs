@@ -20,11 +20,11 @@ public class PlayerMovement : MonoBehaviour
     private InputAction fire;
     private InputAction block;
 
-    //public GameObject warp1;
-    //public GameObject warp2;
+
     public GameObject sword;
     [SerializeField] private GameObject shield;
 
+    private PlayerWarp warp = null;
     private Vector2 startPosition;
 
     private void Awake()
@@ -115,7 +115,14 @@ public class PlayerMovement : MonoBehaviour
     {
         if (moveDirection != Vector2.zero && GetComponent<Character>().GetControl() && !shield.activeSelf && !sword.activeSelf)
         {
-            if (GetComponent<PlayerWarp>() && transform.parent.GetComponent<Room>() != null)
+            warp = warp ?? (GetComponent<PlayerWarp>() ?? null);
+
+            if(warp != null && warp.WarpPlayer(moveDirection))
+            {
+                return;
+            }
+            StartCoroutine(GetComponent<DodgeRoll>().Roll());
+            /*if (GetComponent<PlayerWarp>() && transform.parent.GetComponent<Room>() != null)
             {
                 Vector2 checkPoint = (Vector2)transform.position + (moveDirection * 0.6f);
                 Collider2D wall = Physics2D.OverlapPoint(checkPoint, LayerMask.GetMask("Wall"));
@@ -150,7 +157,7 @@ public class PlayerMovement : MonoBehaviour
             else if (GetComponent<DodgeRoll>() != null)
             {
                 StartCoroutine(GetComponent<DodgeRoll>().Roll());
-            }
+            }*/
         }
     }
 

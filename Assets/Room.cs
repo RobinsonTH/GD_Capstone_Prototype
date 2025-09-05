@@ -9,6 +9,9 @@ public class Room : MonoBehaviour
     private bool explored;
     private bool active;
 
+    public delegate void RoomLoader();
+    public event RoomLoader OnRoomLoad;
+
     private void Awake()
     {
         characters = PopulateCharacterList();
@@ -38,6 +41,11 @@ public class Room : MonoBehaviour
             GetComponent<SpriteRenderer>().enabled = false;
             StartCoroutine(transform.parent.GetComponentInParent<Dungeon>().SetCameraToRoom(this));
             EnableCharacters();
+
+            if(OnRoomLoad != null)
+            {
+                OnRoomLoad();
+            }
             //Debug.Log("Entered+Enabled");
         }
 
@@ -89,5 +97,23 @@ public class Room : MonoBehaviour
     public bool IsActive()
     {
         return active;
+    }
+
+    public void ActivateRoom()
+    {
+        StartCoroutine(Activate());
+    }
+
+    private IEnumerator Activate()
+    {
+        GetComponent<BoxCollider2D>().enabled = true;
+
+        yield return new WaitForSeconds(0.5f);
+
+        SpriteRenderer sprite = GetComponent<SpriteRenderer>();
+        Color color = sprite.color;
+        color.a = 1f;
+        sprite.color = color;
+
     }
 }

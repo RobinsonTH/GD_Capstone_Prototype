@@ -44,11 +44,27 @@ public class Knockback : MonoBehaviour
         if (gameObject.activeSelf && !GetComponentInParent<Health>().invincible)
         {
             //Debug.Log(time + " " + magnitude);
-            StartCoroutine(Push(time, magnitude, source));
+            //.Log(gameObject.ToString() + " Getting Knocked Back!");
+
+            Vector2 moveDirection = Vector2.zero;
+            //float moveSpeed;
+            moveDirection.x = rb.transform.position.x - source.transform.position.x;
+            moveDirection.y = rb.transform.position.y - source.transform.position.y;
+            moveDirection.Normalize();
+            moveDirection *= baseKnockback * magnitude;
+
+
+            StartCoroutine(Push(time, moveDirection));
         }
     }
 
-    private IEnumerator Push(float time, float magnitude, Collider2D source)
+    public void TakeManualKnockback(float time, Vector2 moveVector)
+    {
+        moveVector *= baseKnockback;
+        StartCoroutine(Push(time, moveVector));
+    }
+
+    private IEnumerator Push(float time, Vector2 moveVector)
     {
         //Debug.Log("Coroutine in progress");
         //lock out other movement scripts
@@ -56,13 +72,8 @@ public class Knockback : MonoBehaviour
         isMoving = true;
 
         //set rigidbody trajectory and time based on knockback values
-        Vector2 moveDirection = Vector2.zero;
-        float moveSpeed;
-        moveDirection.x = rb.transform.position.x - source.transform.position.x;
-        moveDirection.y = rb.transform.position.y - source.transform.position.y;
-        moveDirection.Normalize();
-        moveSpeed = baseKnockback * magnitude;
-        rb.velocity = new Vector2(moveDirection.x * moveSpeed, moveDirection.y * moveSpeed);
+
+        rb.velocity = moveVector;
         yield return new WaitForSeconds(time);
 
         //reset trajectory and give back movement control

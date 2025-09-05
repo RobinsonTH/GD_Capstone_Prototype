@@ -36,8 +36,8 @@ public class Dungeon : MonoBehaviour
         //get real width and height of room regardless of whether the collider was built manually or just scaled, then use those to get H:W ratio of the room
         //float roomWidth = room.transform.localScale.x;// * room.GetComponent<Collider2D>().bounds.size.x;
         //float roomHeight = room.transform.localScale.y;// * room.GetComponent<Collider2D>().bounds.size.y;
-        float roomWidth = room.GetComponent<Collider2D>().bounds.size.x;
-        float roomHeight = room.GetComponent<Collider2D>().bounds.size.y;
+        float roomWidth = room.GetComponent<SpriteRenderer>().bounds.size.x;
+        float roomHeight = room.GetComponent<SpriteRenderer>().bounds.size.y;
         float roomRatio = roomHeight / roomWidth;
 
         //cam.transform.position = room.transform.position;

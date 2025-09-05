@@ -6,7 +6,19 @@ public class DodgeRoll : MonoBehaviour
 {
     public AnimationCurve lerpCurve;
     public float distance;
+    //[SerializeField] private float dashSpeed;
     public float animSeconds;
+
+    Character character;
+    Health health;
+    Rigidbody2D rb;
+
+    private void Awake()
+    {
+        character = GetComponent<Character>();
+        health = GetComponent<Health>();
+        rb = GetComponent<Rigidbody2D>();
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -21,28 +33,53 @@ public class DodgeRoll : MonoBehaviour
 
     public IEnumerator Roll()
     {
+        //float lastTime = 0f;
         float currentTime = 0f;
+
+        //float speedLoss = 0f;
+        //float newSpeed = dashSpeed;
         float remappedTime = 0f;
         Vector3 startPosition = transform.position;
 
-        GetComponent<Character>().LoseControl();
-        GetComponent<Health>().invincible = true;
+        character.LoseControl();
+        health.invincible = true;
+
+        //rb.velocity = transform.up * dashSpeed;
 
         while (currentTime <= animSeconds)
         {
             
-            GetComponent<Character>().HoldControl();
-            GetComponent<Health>().invincible = true;
+            character.HoldControl();
+            health.invincible = true;
 
             currentTime += Time.deltaTime;
             remappedTime = lerpCurve.Evaluate(currentTime/animSeconds);
-            GetComponent<Rigidbody2D>().MovePosition(Vector3.Lerp(startPosition, (startPosition + (transform.up * distance)), remappedTime));
+            rb.MovePosition(Vector3.Lerp(startPosition, (startPosition + (transform.up * distance)), remappedTime));
 
             yield return null;
         }
 
-        GetComponent<Character>().GainControl();
-        GetComponent<Health>().invincible = false;
+        /*while (currentTime <= animSeconds)
+        {
+            character.HoldControl();
+            health.invincible = true;
+
+            lastTime = currentTime;
+            currentTime += Time.deltaTime;
+            speedLoss = dashSpeed * (lerpCurve.Evaluate(currentTime/animSeconds) - lerpCurve.Evaluate(lastTime/animSeconds));
+            newSpeed = rb.velocity.magnitude + speedLoss;
+            if (newSpeed < 0f)
+            {
+                newSpeed = 0f;
+            }
+            rb.velocity = rb.velocity.normalized * newSpeed;
+
+            yield return null;
+
+        }*/
+
+        character.GainControl();
+        health.invincible = false;
 
     }
 }
