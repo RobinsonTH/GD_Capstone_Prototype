@@ -39,7 +39,7 @@ public class IntermittentSpawner : MonoBehaviour
     {
         for (int i = 0; i < spawnCount; i++)
         {
-            objects[i] = Instantiate(spawn, gameObject.transform);
+            objects[i] = Instantiate(spawn, (transform.position + transform.up * 0.5f), transform.rotation, gameObject.transform);
             Destroy(objects[i], spawnLifetime);
             yield return new WaitForSeconds(delaySeconds);
         }

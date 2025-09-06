@@ -15,20 +15,21 @@ public class OnDeathDroptable : MonoBehaviour
 
     private void OnEnable()
     {
-        health.OnDeath += RollTable;
+        health.OnDeath += Roll;
     }
 
     private void OnDisable()
     {
-        health.OnDeath -= RollTable;
+        health.OnDeath -= Roll;
     }
 
-    private void RollTable()
+    private void Roll()
     {
         GameObject roll = table.RollTable();
         if (roll != null)
         {
             Instantiate(roll, transform.position, Quaternion.identity, transform.parent);
+            //Instantiate(roll);
         }
     }
 }

@@ -60,10 +60,12 @@ public class Knockback : MonoBehaviour
 
     public void TakeManualKnockback(float time, Vector2 moveVector)
     {
-        moveVector *= baseKnockback;
-        StartCoroutine(Push(time, moveVector));
+        if (gameObject.activeSelf && !GetComponentInParent<Health>().invincible)
+        {
+            moveVector *= baseKnockback;
+            StartCoroutine(Push(time, moveVector));
+        }
     }
-
     private IEnumerator Push(float time, Vector2 moveVector)
     {
         //Debug.Log("Coroutine in progress");

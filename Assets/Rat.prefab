@@ -11,16 +11,15 @@ GameObject:
   - component: {fileID: 4838448078705448455}
   - component: {fileID: 7024807392938930306}
   - component: {fileID: 4041072664615970758}
+  - component: {fileID: 939821896226179427}
+  - component: {fileID: 8589782014953586607}
   - component: {fileID: 361539844166647568}
-  - component: {fileID: 110451877632370501}
   - component: {fileID: 7330467476761748876}
+  - component: {fileID: 110451877632370501}
   - component: {fileID: 2846773148745906658}
   - component: {fileID: 3671230811472550767}
   - component: {fileID: 9208433777764829705}
-  - component: {fileID: 2382645310079204647}
-  - component: {fileID: 939821896226179427}
   - component: {fileID: 2548844077676100902}
-  - component: {fileID: 8589782014953586607}
   m_Layer: 12
   m_Name: Rat
   m_TagString: Enemy
@@ -58,7 +57,7 @@ CircleCollider2D:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4294967295
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -108,6 +107,60 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &939821896226179427
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1041332681328607048}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1d85c2ccd74b324192934547359db5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  character: {fileID: 361539844166647568}
+  rb: {fileID: 4041072664615970758}
+  target: {fileID: 0}
+  dashCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  dashSpeed: 8
+  startState: 5
+--- !u!114 &8589782014953586607
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1041332681328607048}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb94ec121bbe02142b67fae022efe051, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  table: {fileID: 11400000, guid: 00d261bab1899f44f80e92544caca548, type: 2}
 --- !u!114 &361539844166647568
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -121,6 +174,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   equipped: {fileID: 0}
+--- !u!114 &7330467476761748876
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1041332681328607048}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3957c4efaf5493a448f15a7eaffe67e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 3
+  currentHealth: 3
+  invincible: 0
 --- !u!114 &110451877632370501
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -138,21 +206,6 @@ MonoBehaviour:
   targetTags:
   - Player
   - Shield
---- !u!114 &7330467476761748876
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1041332681328607048}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3957c4efaf5493a448f15a7eaffe67e2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxHealth: 3
-  currentHealth: 3
-  invincible: 0
 --- !u!114 &2846773148745906658
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -196,60 +249,6 @@ MonoBehaviour:
   seconds: 0.1
   flicker: 0
   flickerSpeed: 0.1
---- !u!114 &2382645310079204647
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1041332681328607048}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bc77746fec20940429e620fe5cc9df42, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  drop: {fileID: 0}
---- !u!114 &939821896226179427
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1041332681328607048}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a1d85c2ccd74b324192934547359db5c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  character: {fileID: 361539844166647568}
-  rb: {fileID: 4041072664615970758}
-  target: {fileID: 0}
-  dashCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 2
-      outSlope: 2
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  dashSpeed: 8
-  startState: 5
 --- !u!114 &2548844077676100902
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -262,19 +261,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2fccfd1b1874da947901d605af06b27c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &8589782014953586607
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1041332681328607048}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb94ec121bbe02142b67fae022efe051, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  table: {fileID: 11400000, guid: 00d261bab1899f44f80e92544caca548, type: 2}
 --- !u!1 &1601781311516054452
 GameObject:
   m_ObjectHideFlags: 0

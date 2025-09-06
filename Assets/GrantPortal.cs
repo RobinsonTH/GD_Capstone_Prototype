@@ -41,7 +41,12 @@ public class GrantPortal : MonoBehaviour
         Destroy(gameObject);
     }
 
-    public void endAnimation()
+    public void FadeRunes()
+    {
+        transform.parent.GetComponent<Animator>().SetTrigger("PortalAbsorbed");
+    }
+
+    public void EndAnimation()
     {
         GetComponent<SpriteRenderer>().enabled = false; 
         animationFinished = true;

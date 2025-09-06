@@ -138,6 +138,7 @@ public class SpearmanBehavior : MonoBehaviour
 
         bool foundTarget = false;
 
+        agent.Warp(transform.position);
         //agent.updatePosition = true;
         while (target != null && !foundTarget) //fill in line of sight condition later
         {
