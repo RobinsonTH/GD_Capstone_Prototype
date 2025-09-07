@@ -42,7 +42,7 @@ public class DodgeRoll : MonoBehaviour
         //Vector3 startPosition = transform.position;
 
         character.LoseControl();
-        health.invincible = true;
+        health.GainInvincibility();
 
         rb.velocity = transform.up * dashSpeed;
 
@@ -61,8 +61,8 @@ public class DodgeRoll : MonoBehaviour
 
         while (currentTime <= animSeconds)
         {
-            character.HoldControl();
-            health.invincible = true;
+            //character.HoldControl();
+            //health.invincible = true;
 
             lastTime = currentTime;
             currentTime += Time.deltaTime;
@@ -79,7 +79,7 @@ public class DodgeRoll : MonoBehaviour
         }
 
         character.GainControl();
-        health.invincible = false;
+        health.LoseInvincibility();
 
     }
 }

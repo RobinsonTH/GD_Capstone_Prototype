@@ -12,6 +12,8 @@ public class IFrames : MonoBehaviour
     private Health health;
     private SpriteRenderer sprite;
 
+    private Coroutine invincibility = null;
+
     private void Awake()
     {
         health = GetComponent<Health>();
@@ -38,6 +40,8 @@ public class IFrames : MonoBehaviour
         {
             GetComponent<Health>().OnDamage -= InvulnOnHit;
         }
+
+        if (invincibility != null) { health.LoseInvincibility(); }
     }
 
     // Update is called once per frame
@@ -55,13 +59,12 @@ public class IFrames : MonoBehaviour
     private IEnumerator Invincibility()
     {
         //Debug.Log("Coroutine Started");
-        health.invincible = true;
+        health.GainInvincibility();
         if (flicker)
         {
             float i = 0;
             while (i < seconds)
             {
-                health.invincible = true;
                 i += flickerSpeed;
                 sprite.enabled = !sprite.enabled;
                 yield return new WaitForSeconds(flickerSpeed);
@@ -72,6 +75,8 @@ public class IFrames : MonoBehaviour
         {
             yield return new WaitForSeconds(seconds);
         }
-        health.invincible = false;
+        health.LoseInvincibility();
+        invincibility = null;
+
     }
 }

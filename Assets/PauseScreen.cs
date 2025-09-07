@@ -1,13 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class PauseScreen : MonoBehaviour
 {
     [SerializeField] private Dungeon dungeon;
     [SerializeField] private Camera mapCamera;
     [SerializeField] private GameObject pausePanel;
+    [SerializeField] private Button defaultButton;
     private InputAction pause;
     private InputAction resume;
 
@@ -52,10 +55,12 @@ public class PauseScreen : MonoBehaviour
 
     public void Pause(InputAction.CallbackContext context)
     {
+
         //InputManager.Input.SwitchCurrentActionMap("PauseScreen");
         InputManager.Actions.Player.Disable();
         InputManager.Actions.PauseScreen.Enable();
         pausePanel.SetActive(true);
+        EventSystem.current.SetSelectedGameObject(defaultButton.gameObject);
         if (mapCamera != null)
         {
             dungeon.UnmaskExploredRooms();

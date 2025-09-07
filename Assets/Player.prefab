@@ -369,9 +369,9 @@ GameObject:
   - component: {fileID: 2677707841136532947}
   - component: {fileID: 5711248579409157310}
   - component: {fileID: 2589224209663590936}
-  - component: {fileID: 1169745330794298747}
   - component: {fileID: 1350212787574406381}
   - component: {fileID: 2941791357389682275}
+  - component: {fileID: 1169745330794298747}
   - component: {fileID: 5266042188745492515}
   m_Layer: 10
   m_Name: PlayerShield
@@ -492,23 +492,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &1169745330794298747
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3772354638980184718}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ade85bc1871723941a5f45af6e810a83, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  time: 0.1
-  magnitude: 1
-  targetTags:
-  - Enemy
-  - Shield
 --- !u!61 &1350212787574406381
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -581,6 +564,23 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &1169745330794298747
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3772354638980184718}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ade85bc1871723941a5f45af6e810a83, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  time: 0.1
+  magnitude: 1
+  targetTags:
+  - Enemy
+  - Shield
 --- !u!114 &5266042188745492515
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -936,7 +936,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  distance: 4
+  dashSpeed: 0
   animSeconds: 0.5
 --- !u!58 &6172607593045123200
 CircleCollider2D:

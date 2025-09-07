@@ -75,8 +75,11 @@ public class SpearmanBehavior : MonoBehaviour
                     break;*/
                 case State.HuntTarget:
                     coroutine = HuntTarget();
-                    state = State.Fire;
-                    iterator = 1;
+                    if (iterator <= 0)
+                    {
+                        state = State.Fire;
+                        iterator = 1;
+                    }
                     break;
                 case State.Fire:
                     coroutine = character.equipped.Fire(character);
@@ -111,7 +114,7 @@ public class SpearmanBehavior : MonoBehaviour
                     break;
             }
             //Debug.Log("State Machine reached a decision. Iterator = " + iterator);
-            //Debug.Log("Current State is " + state.ToString());
+            //Debug.Log("Next State is " + state.ToString());
             StartCoroutine(WrapperCoroutine(coroutine));
         }
     }
@@ -122,6 +125,7 @@ public class SpearmanBehavior : MonoBehaviour
         yield return StartCoroutine(wrapped);
         isIdle = true;
         iterator--;
+        Debug.Log("Wrapper Complete");
     }
 
     private IEnumerator Wait(float delaySeconds)
@@ -132,6 +136,7 @@ public class SpearmanBehavior : MonoBehaviour
 
     private IEnumerator HuntTarget()
     {
+        Debug.Log("Hunting");
         Vector3 direction;
         Quaternion lookDirection;
         RaycastHit2D hit;
@@ -143,7 +148,7 @@ public class SpearmanBehavior : MonoBehaviour
         while (target != null && !foundTarget) //fill in line of sight condition later
         {
             agent.SetDestination(target.position);
-            agent.updatePosition = (character == null || character.GetControl());
+            agent.updatePosition = character.GetControl();
             
 
             if (agent.hasPath)

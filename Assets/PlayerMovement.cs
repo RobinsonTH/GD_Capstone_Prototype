@@ -24,18 +24,20 @@ public class PlayerMovement : MonoBehaviour
     public GameObject sword;
     [SerializeField] private GameObject shield;
 
+    private Character character;
     private PlayerWarp warp = null;
     private Vector2 startPosition;
 
     private void Awake()
     {
+        character = GetComponent<Character>();
         //playerControls = new PlayerInputActions();
         startPosition = transform.position;
     }
 
     private void OnEnable()
     {
-        transform.position = startPosition;
+        
 
         move = InputManager.Actions.Player.Move;
         move.Enable();
@@ -65,6 +67,8 @@ public class PlayerMovement : MonoBehaviour
         swing.Disable();
         fire.Disable();
         block.Disable();
+
+        transform.position = startPosition;
     }
 
     // Start is called before the first frame update
@@ -76,6 +80,7 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Debug.Log("Lockouts: " + character.lockouts);
         moveDirection = move.ReadValue<Vector2>();
         if (!sword.activeSelf)
         {
@@ -93,7 +98,7 @@ public class PlayerMovement : MonoBehaviour
                 moveDirection = Vector2.zero;
             }
 
-            if (GetComponent<Character>().GetControl())
+            if (character.GetControl())
             {
                 if (!shield.activeSelf)
                 {
@@ -113,8 +118,10 @@ public class PlayerMovement : MonoBehaviour
 
     void Interact(InputAction.CallbackContext context)
     {
-        if (moveDirection != Vector2.zero && GetComponent<Character>().GetControl() && !shield.activeSelf && !sword.activeSelf)
+        if (moveDirection != Vector2.zero && character.GetControl())
         {
+            sword.SetActive(false);
+            shield.SetActive(false);
             warp = warp ?? (GetComponent<PlayerWarp>() ?? null);
 
             if(warp != null && warp.WarpPlayer(moveDirection))
@@ -163,7 +170,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Swing(InputAction.CallbackContext context)
     {
-        if (GetComponent<Character>().GetControl() && !shield.activeSelf && !sword.activeSelf)
+        if (character.GetControl() && !shield.activeSelf && !sword.activeSelf)
         {
             rb.velocity = Vector3.zero;
             sword.SetActive(true);
@@ -172,15 +179,15 @@ public class PlayerMovement : MonoBehaviour
 
     void Fire(InputAction.CallbackContext context)
     {
-        if (GetComponent<Character>().GetControl() && !shield.activeSelf && !sword.activeSelf)
+        if (character.GetControl() && !shield.activeSelf && !sword.activeSelf)
         {
-            GetComponent<Character>().FireEquipment();
+            character.FireEquipment();
         }
     }
 
     void RaiseShield(InputAction.CallbackContext context)
     {
-        if (GetComponent<Character>().GetControl())
+        if (character.GetControl() && !shield.activeSelf && !sword.activeSelf)
         {
             rb.velocity = Vector3.zero;
             shield.SetActive(true);

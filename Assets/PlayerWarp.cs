@@ -74,7 +74,7 @@ public class PlayerWarp : MonoBehaviour
 
         //Fully take over character control and prevent interactions
         character.LoseControl();
-        health.invincible = true;
+        health.GainInvincibility();
         hurtbox.enabled = false;
         //rb.simulated = false;
         rb.isKinematic = true;
@@ -118,7 +118,7 @@ public class PlayerWarp : MonoBehaviour
 
         //Give back all control
         character.GainControl();
-        health.invincible = false;
+        health.LoseInvincibility();
         hurtbox.enabled = true;
         //rb.simulated = true;
         rb.isKinematic = false;

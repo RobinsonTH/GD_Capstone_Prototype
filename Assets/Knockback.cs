@@ -41,7 +41,7 @@ public class Knockback : MonoBehaviour
     public void TakeKnockback(float time, float magnitude, Collider2D source)
     {
         //Debug.Log("Starting Coroutine");
-        if (gameObject.activeSelf && !GetComponentInParent<Health>().invincible)
+        if (gameObject.activeSelf && !GetComponentInParent<Health>().IsInvincible())
         {
             //Debug.Log(time + " " + magnitude);
             //.Log(gameObject.ToString() + " Getting Knocked Back!");
@@ -60,7 +60,7 @@ public class Knockback : MonoBehaviour
 
     public void TakeManualKnockback(float time, Vector2 moveVector)
     {
-        if (gameObject.activeSelf && !GetComponentInParent<Health>().invincible)
+        if (gameObject.activeSelf && !GetComponentInParent<Health>().IsInvincible())
         {
             moveVector *= baseKnockback;
             StartCoroutine(Push(time, moveVector));
@@ -68,7 +68,7 @@ public class Knockback : MonoBehaviour
     }
     private IEnumerator Push(float time, Vector2 moveVector)
     {
-        //Debug.Log("Coroutine in progress");
+        //Debug.Log("Knocked Back");
         //lock out other movement scripts
         rb.GetComponent<Character>().LoseControl();
         isMoving = true;

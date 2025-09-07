@@ -303,6 +303,17 @@
                 },
                 {
                     "name": "",
+                    "id": "9320c422-8cd8-4a74-8ad7-c06d389f6b9f",
+                    "path": "<Keyboard>/z",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Swing",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "6ad226cf-1052-4dab-84fa-04440ecee4e6",
                     "path": "<Mouse>/rightButton",
                     "interactions": "",
@@ -363,6 +374,17 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Gamepad",
+                    "action": "Fire",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d8fb78e8-8218-4801-ae0f-2d305a152582",
+                    "path": "<Keyboard>/c",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
                     "action": "Fire",
                     "isComposite": false,
                     "isPartOfComposite": false

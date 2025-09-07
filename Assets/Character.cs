@@ -7,7 +7,8 @@ public class Character : MonoBehaviour
     public Equipment equipped;
     private Coroutine firingEquipment;
 
-    private bool inControl = true;
+    //private bool inControl = true;
+    public int lockouts = 0;
     // Start is called before the first frame update
     void Start()
     {
@@ -22,7 +23,8 @@ public class Character : MonoBehaviour
 
     private void OnEnable()
     {
-        inControl = true;
+        //inControl = true;
+        lockouts = 0;
         if(GetComponent<Health>())
         {
             GetComponent<Health>().OnDamage += InterruptEquipment;
@@ -35,7 +37,8 @@ public class Character : MonoBehaviour
 
     private void OnDisable()
     {
-        inControl = false;
+        //inControl = false;
+        lockouts = 1;
         if (GetComponent<Health>())
         {
             GetComponent<Health>().OnDamage -= InterruptEquipment;
@@ -44,23 +47,30 @@ public class Character : MonoBehaviour
 
     public bool GetControl()
     {
-        return inControl;
+        return (lockouts == 0);
     }
 
     public void LoseControl()
     {
         GetComponent<Rigidbody2D>().velocity = Vector3.zero;
-        inControl = false;
+        //inControl = false;
+        lockouts++;
     }
 
-    public void HoldControl()
+    public void LoseControlNoStop()
     {
-        inControl = false;
+        lockouts++;
     }
+
+    /*public void HoldControl()
+    {
+        //inControl = false;
+    }*/
 
     public void GainControl()
     {
-        inControl = true;
+        //inControl = true;
+        lockouts--;
     }
 
     public void Equip(Equipment equip)

@@ -11,13 +11,13 @@ GameObject:
   - component: {fileID: 8123292016462084814}
   - component: {fileID: 7179073393504330257}
   - component: {fileID: 3777886174716040118}
+  - component: {fileID: 2227090464534911417}
   - component: {fileID: 6382315285263165930}
   - component: {fileID: 5203678958414367398}
   - component: {fileID: 5783370849963311599}
-  - component: {fileID: 6335562524378861891}
   m_Layer: 12
   m_Name: ChargingSpear
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -105,10 +105,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ade85bc1871723941a5f45af6e810a83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  time: 0.2
-  magnitude: 2
+  time: 0.5
+  magnitude: 1
   targetTags:
   - Player
+--- !u!114 &2227090464534911417
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1794548030688215371}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ade85bc1871723941a5f45af6e810a83, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  time: 0.5
+  magnitude: 2
+  targetTags:
   - Shield
 --- !u!114 &6382315285263165930
 MonoBehaviour:
@@ -136,6 +151,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: faac7e5e4759b934bad35cc4f11c27c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  duration: 2
 --- !u!60 &5783370849963311599
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -148,7 +164,7 @@ PolygonCollider2D:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 28663
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -180,38 +196,11 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 1.0236318, y: 0.4994063}
+    - - {x: 0.9802339, y: 0.4957898}
       - {x: 0.49780577, y: 0.99935037}
       - {x: -0.50047016, y: 0.9987658}
-      - {x: -0.99699116, y: 0.5088523}
-      - {x: -1.1072632, y: 0}
+      - {x: -0.9809771, y: 0.503133}
+      - {x: -0.98090494, y: 0.0013287961}
       - {x: 0.5, y: 0}
-      - {x: 1.1328299, y: 0.00017088652}
+      - {x: 0.98093677, y: 0.00017088652}
   m_UseDelaunayMesh: 0
---- !u!50 &6335562524378861891
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1794548030688215371}
-  m_BodyType: 1
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 1
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0

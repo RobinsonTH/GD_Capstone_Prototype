@@ -22,21 +22,24 @@ public class ChargingSpear : Equipment
         Rigidbody2D rb = source.GetComponent<Rigidbody2D>();
 
         GameObject spear = Instantiate(weapon, source.transform);
-        source.LoseControl();
+        //source.LoseControl();
         rb.velocity = source.transform.up * 10;
         while(rb.velocity.magnitude > 0)
         {
-            source.HoldControl();
+            if(!source.GetControl())
+            {
+                rb.velocity = Vector3.zero;
+            }
             yield return null;
         }
         float t = 0f;
-        while(t < 3.0f)
+        while (spear != null && t < 3.0f)
         {
-            source.HoldControl();
             t += Time.deltaTime;
             yield return null;
         }
+
+        //source.GainControl();
         GameObject.Destroy(spear);
-        source.GainControl();
     }
 }

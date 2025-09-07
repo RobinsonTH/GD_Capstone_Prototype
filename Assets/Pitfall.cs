@@ -36,13 +36,12 @@ public class Pitfall : MonoBehaviour
 
     private IEnumerator Fall(Transform collision)
     {
-        collision.GetComponent<Character>().LoseControl();
-        collision.GetComponent<Health>().invincible = true;
+        collision.GetComponent<Character>().LoseControlNoStop();
+        collision.GetComponent<Health>().GainInvincibility();
         float t = 0;
         float normalizedTime = 0;
         while (t <= duration)
         {
-            collision.GetComponent<Character>().HoldControl();
             t += Time.deltaTime;
             normalizedTime = 1 - (t / duration);
             collision.localScale = new Vector3(normalizedTime, normalizedTime, 1);
@@ -63,7 +62,7 @@ public class Pitfall : MonoBehaviour
         player.parent.GetComponent<SpriteRenderer>().enabled = true;
         yield return new WaitForSeconds(0.5f);
         player.position = targetRoom.transform.position;
-        player.GetComponent<Health>().invincible = false;
+        player.GetComponent<Health>().LoseInvincibility();
         player.GetComponent<Health>().TakeDamage(fallDamage);
         player.GetComponent<Character>().GainControl();
     }

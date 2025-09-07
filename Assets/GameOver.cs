@@ -1,10 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class GameOver : MonoBehaviour
 {
     [SerializeField] private PlayerMovement player;
+    [SerializeField] private Button defaultButton;
 
     // Start is called before the first frame update
     void Start()
@@ -30,6 +33,7 @@ public class GameOver : MonoBehaviour
 
     void GameOverScreen()
     {
+        EventSystem.current.SetSelectedGameObject(defaultButton.gameObject);
         foreach (Transform child in transform)
         {
             child.gameObject.SetActive(true);

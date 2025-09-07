@@ -15,7 +15,7 @@ public class Health : MonoBehaviour
 
     public int maxHealth;
     public int currentHealth;
-    public bool invincible = false;
+    public int invincible = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -32,14 +32,14 @@ public class Health : MonoBehaviour
     private void OnEnable()
     {
         GainHealth(maxHealth);
-        invincible = false;
+        invincible = 0;
     }
 
     
 
     public void TakeDamage(int damage)
     {
-        if (!invincible)
+        if (invincible == 0)
         {
             currentHealth -= damage;
             if (OnDamage != null) { OnDamage(damage); }
@@ -66,5 +66,20 @@ public class Health : MonoBehaviour
     {
         if (OnDeath != null) { OnDeath(); }
         gameObject.SetActive(false);
+    }
+
+    public bool IsInvincible()
+    {
+        return invincible > 0;
+    }
+
+    public void GainInvincibility()
+    {
+        invincible++;
+    }
+
+    public void LoseInvincibility()
+    {
+        invincible--;
     }
 }
