@@ -39,7 +39,7 @@ public class HitboxKnockback : MonoBehaviour
             {
                 //Knockback knockback = collision.GetComponentInParent<Knockback>();
                 collision.GetComponentInParent<Knockback>()?.TakeKnockback(time, magnitude, GetComponent<Collider2D>());
-                break;
+                return;
             }
         }
     }

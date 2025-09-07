@@ -37,4 +37,12 @@ public class EnableObjectsInSequence : MonoBehaviour
             yield return new WaitForSeconds(delay);
         }
     }
+
+    public void DisableAll()
+    {
+        foreach(GameObject obj in objects)
+        {
+            obj.SetActive(false);
+        }
+    }
 }

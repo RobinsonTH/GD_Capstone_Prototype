@@ -15,9 +15,10 @@ GameObject:
   - component: {fileID: 6382315285263165930}
   - component: {fileID: 5203678958414367398}
   - component: {fileID: 5783370849963311599}
-  m_Layer: 12
+  - component: {fileID: 8000407365862147023}
+  m_Layer: 15
   m_Name: ChargingSpear
-  m_TagString: Enemy
+  m_TagString: EnemyMelee
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -116,7 +117,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1794548030688215371}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ade85bc1871723941a5f45af6e810a83, type: 3}
   m_Name: 
@@ -204,3 +205,15 @@ PolygonCollider2D:
       - {x: 0.5, y: 0}
       - {x: 0.98093677, y: 0.00017088652}
   m_UseDelaunayMesh: 0
+--- !u!114 &8000407365862147023
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1794548030688215371}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5bff281f7ba00ba479afab91199bfad8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

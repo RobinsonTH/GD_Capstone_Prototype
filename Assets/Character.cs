@@ -8,7 +8,7 @@ public class Character : MonoBehaviour
     private Coroutine firingEquipment;
 
     //private bool inControl = true;
-    public int lockouts = 0;
+    private int lockouts = 0;
     // Start is called before the first frame update
     void Start()
     {

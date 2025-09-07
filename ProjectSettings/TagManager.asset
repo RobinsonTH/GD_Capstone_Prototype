@@ -11,6 +11,7 @@ TagManager:
   - EnemyOrigin
   - Player Melee
   - Shield
+  - EnemyMelee
   layers:
   - Default
   - TransparentFX
@@ -27,7 +28,7 @@ TagManager:
   - Enemy
   - Pickups
   - PlayerShield
-  - 
+  - EnemyMelee
   - 
   - 
   - 

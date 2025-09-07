@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
@@ -9,10 +10,15 @@ public class GameOver : MonoBehaviour
     [SerializeField] private PlayerMovement player;
     [SerializeField] private Button defaultButton;
 
+    [SerializeField] UnityEvent OnRetry;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        if(OnRetry == null)
+        {
+            OnRetry = new UnityEvent();
+        }
     }
 
     private void OnEnable()
@@ -42,6 +48,7 @@ public class GameOver : MonoBehaviour
 
     public void Retry()
     {
+        OnRetry.Invoke();
         foreach (Transform child in transform)
         {
             child.gameObject.SetActive(false);

@@ -22,6 +22,7 @@ public class Floor : MonoBehaviour
         {
             //collision.transform.parent.SetParent(gameObject.transform, true);
             GetComponent<SpriteRenderer>().enabled = false;
+            collision.transform.parent.GetComponent<PlayerMovement>().SetSpawn(collision.transform.position);
             transform.parent.GetComponentInParent<Dungeon>().SetMapCameraToFloor(this);
             //EnableCharacters();
             //Debug.Log("Entered+Enabled");

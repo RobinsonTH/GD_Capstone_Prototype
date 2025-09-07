@@ -27,12 +27,14 @@ public class PlayerMovement : MonoBehaviour
     private Character character;
     private PlayerWarp warp = null;
     private Vector2 startPosition;
+    private Quaternion startRotation;
 
     private void Awake()
     {
         character = GetComponent<Character>();
         //playerControls = new PlayerInputActions();
         startPosition = transform.position;
+        startRotation = transform.rotation;
     }
 
     private void OnEnable()
@@ -69,6 +71,7 @@ public class PlayerMovement : MonoBehaviour
         block.Disable();
 
         transform.position = startPosition;
+        transform.rotation = startRotation;
     }
 
     // Start is called before the first frame update
@@ -80,7 +83,7 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log("Lockouts: " + character.lockouts);
+        //Debug.Log("Lockouts: " + character.lockouts);
         moveDirection = move.ReadValue<Vector2>();
         if (!sword.activeSelf)
         {
@@ -209,5 +212,10 @@ public class PlayerMovement : MonoBehaviour
             block.canceled -= DropShield;
             GetComponent<Health>().OnDamage -= DropShield;
         }
+    }
+
+    public void SetSpawn(Vector2 spawnPosition)
+    {
+        startPosition = spawnPosition;
     }
 }

@@ -6,10 +6,15 @@ using UnityEngine.EventSystems;
 public class Knockback : MonoBehaviour
 {
     public Rigidbody2D rb;
+    private Knockback root;
     public float baseKnockback;
 
-    private bool isMoving;
+    private Coroutine isMoving = null;
 
+    private void Awake()
+    {
+        root = rb.GetComponent<Knockback>();
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -18,15 +23,16 @@ public class Knockback : MonoBehaviour
 
     private void OnEnable()
     {
-        isMoving = false;
+        
     }
 
     private void OnDisable()
     {
-        if(isMoving)
+        if(isMoving != null)
         {
+            //Debug.Log(gameObject.ToString() + " was disabled during knockback. -1");
             rb.GetComponent<Character>().GainControl();
-            isMoving = false;
+            isMoving = null;
         }
     }
 
@@ -41,7 +47,7 @@ public class Knockback : MonoBehaviour
     public void TakeKnockback(float time, float magnitude, Collider2D source)
     {
         //Debug.Log("Starting Coroutine");
-        if (gameObject.activeSelf && !GetComponentInParent<Health>().IsInvincible())
+        if (gameObject.activeSelf && !GetComponentInParent<Health>().IsInvincible() && !root.IsMoving())
         {
             //Debug.Log(time + " " + magnitude);
             //.Log(gameObject.ToString() + " Getting Knocked Back!");
@@ -54,24 +60,30 @@ public class Knockback : MonoBehaviour
             moveDirection *= baseKnockback * magnitude;
 
 
-            StartCoroutine(Push(time, moveDirection));
+            root.SetKnockback(time, moveDirection);
         }
     }
 
     public void TakeManualKnockback(float time, Vector2 moveVector)
     {
-        if (gameObject.activeSelf && !GetComponentInParent<Health>().IsInvincible())
+        if (gameObject.activeSelf && !GetComponentInParent<Health>().IsInvincible() && !root.IsMoving())
         {
             moveVector *= baseKnockback;
-            StartCoroutine(Push(time, moveVector));
+            root.SetKnockback(time, moveVector);
         }
     }
+
+    private void SetKnockback(float time, Vector2 moveVector)
+    {
+        isMoving = StartCoroutine(Push(time, moveVector));
+    }
+
+
     private IEnumerator Push(float time, Vector2 moveVector)
     {
-        //Debug.Log("Knocked Back");
+        //Debug.Log(rb.gameObject.ToString() + "was knocked back. +1");
         //lock out other movement scripts
         rb.GetComponent<Character>().LoseControl();
-        isMoving = true;
 
         //set rigidbody trajectory and time based on knockback values
 
@@ -81,6 +93,12 @@ public class Knockback : MonoBehaviour
         //reset trajectory and give back movement control
         rb.velocity = Vector2.zero;
         rb.GetComponent<Character>().GainControl();
-        isMoving = false;
+        //Debug.Log(rb.gameObject.ToString() + " ended knockback. -1");
+        isMoving = null;
+    }
+
+    public bool IsMoving()
+    {
+        return isMoving != null;
     }
 }

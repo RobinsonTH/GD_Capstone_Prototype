@@ -22,6 +22,7 @@ public class GrantPortal : MonoBehaviour
         if(collision.CompareTag("PlayerOrigin"))
         {
             StartCoroutine(GrantWarp(collision.transform.parent.gameObject));
+            GetComponent<CircleCollider2D>().enabled = false;
         }
     }
 

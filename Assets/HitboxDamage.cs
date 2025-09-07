@@ -27,6 +27,8 @@ public class HitboxDamage : MonoBehaviour
 
             collision.GetComponentInChildren<SimpleFlash>()?.Flash();
             collision.GetComponentInParent<Health>()?.TakeDamage(damage);
+
+            GetComponent<CollideOnce>()?.Ignore(collision);
         }
     }
 }

@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 public class SwordHandler : MonoBehaviour
 {
     private InputAction swing;
+    [SerializeField] private CollideOnce bladeCollideOnce;
     // Start is called before the first frame update
     void Start()
     {
@@ -44,6 +45,7 @@ public class SwordHandler : MonoBehaviour
 
     void ClearQueue()
     {
+        bladeCollideOnce.Clear();
         GetComponent<Animator>().SetBool("SwingQueued", false);
     }
 }
