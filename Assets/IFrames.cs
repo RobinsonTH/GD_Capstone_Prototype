@@ -53,7 +53,7 @@ public class IFrames : MonoBehaviour
     public void InvulnOnHit(int damage)
     {
         //Debug.Log("Starting Coroutine");
-        StartCoroutine(Invincibility());
+        invincibility = StartCoroutine(Invincibility());
     }
 
     private IEnumerator Invincibility()

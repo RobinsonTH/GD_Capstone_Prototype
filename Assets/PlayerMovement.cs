@@ -24,6 +24,7 @@ public class PlayerMovement : MonoBehaviour
     public GameObject sword;
     [SerializeField] private GameObject shield;
 
+    private Health health;
     private Character character;
     private PlayerWarp warp = null;
     private Vector2 startPosition;
@@ -31,6 +32,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Awake()
     {
+        health = GetComponent<Health>();
         character = GetComponent<Character>();
         //playerControls = new PlayerInputActions();
         startPosition = transform.position;
@@ -83,6 +85,7 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //Debug.Log(health.InvincibilitySources());
         //Debug.Log("Lockouts: " + character.lockouts);
         moveDirection = move.ReadValue<Vector2>();
         if (!sword.activeSelf)
@@ -173,8 +176,9 @@ public class PlayerMovement : MonoBehaviour
 
     void Swing(InputAction.CallbackContext context)
     {
-        if (character.GetControl() && !shield.activeSelf && !sword.activeSelf)
+        if (character.GetControl() && !sword.activeSelf)
         {
+            DropShield(0);
             rb.velocity = Vector3.zero;
             sword.SetActive(true);
         }
@@ -182,8 +186,9 @@ public class PlayerMovement : MonoBehaviour
 
     void Fire(InputAction.CallbackContext context)
     {
-        if (character.GetControl() && !shield.activeSelf && !sword.activeSelf)
+        if (character.GetControl() && !sword.activeSelf)
         {
+            DropShield(0);
             character.FireEquipment();
         }
     }
@@ -192,10 +197,11 @@ public class PlayerMovement : MonoBehaviour
     {
         if (character.GetControl() && !shield.activeSelf && !sword.activeSelf)
         {
+            sword.SetActive(false);
             rb.velocity = Vector3.zero;
             shield.SetActive(true);
             block.canceled += DropShield;
-            GetComponent<Health>().OnDamage += DropShield;
+            health.OnDamage += DropShield;
         }
     }
 
@@ -210,7 +216,7 @@ public class PlayerMovement : MonoBehaviour
         {
             shield.SetActive(false);
             block.canceled -= DropShield;
-            GetComponent<Health>().OnDamage -= DropShield;
+            health.OnDamage -= DropShield;
         }
     }
 

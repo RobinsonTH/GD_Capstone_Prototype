@@ -11,28 +11,28 @@ public class StickInWall : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     private void OnDisable()
     {
-        
+
     }
 
     private void OnDestroy()
     {
-        if (sticking != null) { transform.parent.GetComponent<Character>().GainControl(); }
+        if (sticking != null) { transform.parent.GetComponent<Character>()?.GainControl(); }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.CompareTag("Wall"))
+        if (collision.CompareTag("Wall") || collision.CompareTag("Environment"))
         {
             sticking = StartCoroutine(Stick());
         }
@@ -40,9 +40,11 @@ public class StickInWall : MonoBehaviour
 
     private IEnumerator Stick()
     {
-        transform.parent.GetComponent<Character>().LoseControl();
+        transform.parent.GetComponent<Rigidbody2D>().velocity = Vector3.zero;
+        transform.parent.GetComponent<Character>()?.LoseControlNoStop();
+
         yield return new WaitForSeconds(duration);
-        transform.parent.GetComponent<Character>().GainControl();
+        transform.parent.GetComponent<Character>()?.GainControl();
         sticking = null;
         Destroy(gameObject);
     }

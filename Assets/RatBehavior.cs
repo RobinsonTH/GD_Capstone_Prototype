@@ -82,7 +82,7 @@ public class RatBehavior : MonoBehaviour
                     }
                     break;
                 case State.Wait:
-                    coroutine = Wait(UnityEngine.Random.Range(0.5f, 2.0f));
+                    coroutine = Wait(UnityEngine.Random.Range(1.0f, 2.0f));
                     state = State.RatScurry;
                     iterator = UnityEngine.Random.Range(1, 4);
                     break;
@@ -107,6 +107,11 @@ public class RatBehavior : MonoBehaviour
     {
 
         yield return new WaitForSeconds(delaySeconds);
+
+        if(!character.GetControl())
+        {
+            state = State.Wait;
+        }
     }
 
     private IEnumerator AcquireTarget(float delaySeconds)
@@ -175,33 +180,36 @@ public class RatBehavior : MonoBehaviour
         float t = 0;
         bool switchedOnce = false;
         
-        while(t <= time)
+        while(t <= time && character.GetControl())
         {
             t += Time.deltaTime;
-            if (character.GetControl())
+            
+            //divert course to hit player if they're within range
+            RaycastHit2D leftRay = Physics2D.Raycast(transform.position, -transform.right, dashSpeed * time * (1 - t / time), LayerMask.GetMask("Player"));
+            RaycastHit2D rightRay = Physics2D.Raycast(transform.position, transform.right, dashSpeed * time * (1 - t / time), LayerMask.GetMask("Player"));
+
+            if (!switchedOnce)
             {
-                //divert course to hit player if they're within range
-                RaycastHit2D leftRay = Physics2D.Raycast(transform.position, -transform.right, dashSpeed * time * (1 - t / time), LayerMask.GetMask("Player"));
-                RaycastHit2D rightRay = Physics2D.Raycast(transform.position, transform.right, dashSpeed * time * (1 - t / time), LayerMask.GetMask("Player"));
-
-                if (!switchedOnce)
+                if (leftRay.collider != null && leftRay.collider.CompareTag("Player"))
                 {
-                    if (leftRay.collider != null && leftRay.collider.CompareTag("Player"))
-                    {
-                        transform.Rotate(0f, 0f, 90f);
-                        switchedOnce = true;
-                    }
-                    else if (rightRay.collider != null && rightRay.collider.CompareTag("Player"))
-                    {
-                        transform.Rotate(0f, 0f, -90f);
-                        switchedOnce = true;
-                    }
+                    transform.Rotate(0f, 0f, 90f);
+                    switchedOnce = true;
                 }
-
-                //maintain velocity as long as in control
-                rb.velocity = transform.up * dashSpeed;
+                else if (rightRay.collider != null && rightRay.collider.CompareTag("Player"))
+                {
+                    transform.Rotate(0f, 0f, -90f);
+                    switchedOnce = true;
+                }
             }
+
+            //maintain velocity as long as in control
+            rb.velocity = transform.up * dashSpeed;
             yield return null;
+        }
+
+        if(!character.GetControl())
+        {
+            state = State.Wait;
         }
 
         rb.velocity = Vector2.zero;

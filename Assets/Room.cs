@@ -72,7 +72,7 @@ public class Room : MonoBehaviour
     {
         foreach (Character character in characters)
         {
-            character.gameObject.SetActive(false);
+            if (character != null) { character.gameObject.SetActive(false); }
         }
     }
 
@@ -80,7 +80,7 @@ public class Room : MonoBehaviour
     {
         foreach (Character character in characters)
         {
-            character.gameObject.SetActive(true);
+            if (character != null) { character.gameObject.SetActive(true); }
         }
     }
 

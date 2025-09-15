@@ -6,10 +6,16 @@ public class Character : MonoBehaviour
 {
     public Equipment equipped;
     private Coroutine firingEquipment;
+    private Health health;
 
     //private bool inControl = true;
     private int lockouts = 0;
     // Start is called before the first frame update
+
+    private void Awake()
+    {
+        health = GetComponentInParent<Health>();
+    }
     void Start()
     {
         if (equipped != null) { equipped.OnEquip(); }
@@ -25,9 +31,10 @@ public class Character : MonoBehaviour
     {
         //inControl = true;
         lockouts = 0;
-        if(GetComponent<Health>())
+        if(health != null)
         {
-            GetComponent<Health>().OnDamage += InterruptEquipment;
+            health.enabled = true;
+            health.OnDamage += InterruptEquipment;
         }
         //if (GetComponent<SpriteRenderer>())
         //{
@@ -39,9 +46,10 @@ public class Character : MonoBehaviour
     {
         //inControl = false;
         lockouts = 1;
-        if (GetComponent<Health>())
+        if (health != null)
         {
-            GetComponent<Health>().OnDamage -= InterruptEquipment;
+            health.OnDamage -= InterruptEquipment;
+            health.enabled = false;
         }
     }
 

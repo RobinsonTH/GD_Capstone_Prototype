@@ -4,13 +4,35 @@ using UnityEngine;
 
 public class Door : MonoBehaviour
 {
-    protected bool locked = false;
+    [SerializeField] protected bool locked = false;
     public Collider2D door;
+
+    protected SpriteRenderer sprite;
+    protected Color unlockedColor;
+    protected Color lockedColor;
+
+    private void Awake()
+    {
+        sprite = GetComponent<SpriteRenderer>();
+        unlockedColor = sprite.color;
+        lockedColor = unlockedColor;
+        lockedColor.r *= 0.5f;
+        lockedColor.b *= 0.5f;
+        lockedColor.g *= 0.5f;
+    }
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        if(!locked)
+        {
+            door.excludeLayers += LayerMask.GetMask("Player");
+            sprite.color = unlockedColor;
+        }
+        else
+        {
+            sprite.color = lockedColor;
+        }
     }
 
     // Update is called once per frame
@@ -26,19 +48,31 @@ public class Door : MonoBehaviour
             if (Open())
             {
                 GetComponent<SpriteRenderer>().enabled = false;
-                door.excludeLayers = LayerMask.GetMask("Player");
+                //door.excludeLayers = LayerMask.GetMask("Player");
             }
         }
     }
 
     public void Lock()
     {
-        locked = true;
+        if(!locked)
+        {
+            locked = true;
+            door.excludeLayers -= LayerMask.GetMask("Player");
+            sprite.color = lockedColor;
+        }
+        
     }
 
     public void Unlock()
     {
-        locked = false;
+        if(locked)
+        {
+            locked = false;
+            door.excludeLayers += LayerMask.GetMask("Player");
+            sprite.color = unlockedColor;
+        }
+        
     }
 
     protected virtual bool Open()

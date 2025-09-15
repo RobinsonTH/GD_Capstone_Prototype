@@ -2,13 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
+using UnityEngine.U2D;
 
 public class LockedDoor : Door
 {
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         locked = true;
+        sprite = GetComponent<SpriteRenderer>();
+        unlockedColor = sprite.color;
+        lockedColor = unlockedColor;
+        lockedColor.r *= 0.5f;
+        lockedColor.b *= 0.5f;
+        lockedColor.g *= 0.5f;
     }
 
     // Update is called once per frame
@@ -19,9 +26,9 @@ public class LockedDoor : Door
 
     protected override bool Open()
     {
-        if(locked)
+        if(locked && transform.parent.parent.parent.GetComponent<Dungeon>().UnlockDoor())
         {
-            locked = !transform.parent.parent.parent.GetComponent<Dungeon>().UnlockDoor();
+            Unlock();
         }
         return !locked;
     }

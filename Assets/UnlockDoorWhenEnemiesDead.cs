@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class UnlockDoorWhenEnemiesDead : MonoBehaviour
 {
-    [SerializeField] Door door;
+    [SerializeField] List<Door> doors;
 
     private Character[] enemies;
     private int enemyCount;
+    private bool fullyLocked = false;
 
 
     private void Awake()
@@ -17,20 +18,21 @@ public class UnlockDoorWhenEnemiesDead : MonoBehaviour
 
     private void OnEnable()
     {
-        door.Lock();
+        
         enemies = GetComponentsInChildren<Character>(); //GetComponent<Room>().GetCharacterList();
 
-        Debug.Log("Discovered " +  enemies.Length + " Enemies");
+        //Debug.Log("Discovered " +  enemies.Length + " Enemies");
         foreach (Character c in enemies)
         {
-            if(c.GetComponent<Health>())
+            Health h = c.GetComponentInParent<Health>();
+            if(h != null)
             {
-                Debug.Log("Subscribed to an OnDeath event!");
-                c.GetComponent<Health>().OnDeath += Check;
+                //Debug.Log("Subscribed to an OnDeath event!");
+                h.OnDeath += Check;
                 enemyCount++;
             }
         }
-        Debug.Log("Enemy Count: " + enemyCount);
+        //Debug.Log("Enemy Count: " + enemyCount);
 
     }
 
@@ -38,23 +40,47 @@ public class UnlockDoorWhenEnemiesDead : MonoBehaviour
     {
         foreach (Character c in enemies)
         {
-            if (c.GetComponent<Health>())
+            Health h = c.GetComponentInParent<Health>();
+            if (h != null)
             {
-                c.GetComponent<Health>().OnDeath -= Check;
+                h.OnDeath -= Check;
             }
         }
     }
 
-    // Start is called before the first frame update
-    void Start()
+    private void OnTriggerStay2D(Collider2D collision)
     {
-
+        if (fullyLocked == false && collision.CompareTag("PlayerOrigin"))
+        {
+            int lockedDoors = 0;
+            foreach (Door door in doors)
+            {
+                if(door.GetComponent<SpriteRenderer>().enabled)
+                {
+                    
+                    door.Lock();
+                    lockedDoors++;
+                }
+                
+            }
+            if(lockedDoors == doors.Count)
+            {
+                fullyLocked = true;
+            }
+        }
+        
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnTriggerExit2D(Collider2D collision)
     {
-        
+        if(collision.CompareTag("PlayerOrigin"))
+        {
+            fullyLocked = false;
+            foreach(Door door in doors)
+            {
+                door.Unlock();
+            }
+        }
     }
 
     void Check()
@@ -62,9 +88,11 @@ public class UnlockDoorWhenEnemiesDead : MonoBehaviour
         enemyCount--;
         if(enemyCount <= 0)
         {
-            door.Unlock();
-            Debug.Log("Unlocking Door");
+            foreach (Door door in doors)
+            {
+                door.Unlock();
+            }
+            Destroy(this);
         }
-        Debug.Log("Enemy died! New Count: " + enemyCount);
     }
 }

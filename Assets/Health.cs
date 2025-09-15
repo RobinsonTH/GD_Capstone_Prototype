@@ -70,7 +70,7 @@ public class Health : MonoBehaviour
 
     public bool IsInvincible()
     {
-        return invincible > 0;
+        return (invincible > 0);
     }
 
     public void GainInvincibility()
@@ -81,5 +81,10 @@ public class Health : MonoBehaviour
     public void LoseInvincibility()
     {
         invincible--;
+    }
+
+    public int InvincibilitySources()
+    {
+        return invincible;
     }
 }

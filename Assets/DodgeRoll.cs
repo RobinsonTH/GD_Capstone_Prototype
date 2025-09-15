@@ -33,6 +33,7 @@ public class DodgeRoll : MonoBehaviour
 
     public IEnumerator Roll()
     {
+        yield return null;
         float lastTime = 0f;
         float currentTime = 0f;
 

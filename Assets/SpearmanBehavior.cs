@@ -13,6 +13,7 @@ public class SpearmanBehavior : MonoBehaviour
     private Rigidbody2D rb;
     private NavMeshAgent agent;
     [SerializeField] private Transform target;
+    [SerializeField] private Animator animator;
     //[SerializeField] private AnimationCurve dashCurve;
     //[SerializeField] private float dashSpeed;
 
@@ -136,7 +137,7 @@ public class SpearmanBehavior : MonoBehaviour
 
     private IEnumerator HuntTarget()
     {
-        Debug.Log("Hunting");
+        //Debug.Log("Hunting");
         Vector3 direction;
         Quaternion lookDirection;
         RaycastHit2D hit;
@@ -168,12 +169,13 @@ public class SpearmanBehavior : MonoBehaviour
                     //Agent wigs out if speed is ever 0 or less so just prevent it from happening
                     agent.speed = 0.01f;
                 }
+                animator.SetFloat("WalkSpeed", agent.speed);
             }
 
-            hit = Physics2D.Raycast(transform.position, transform.up, 20f, LayerMask.GetMask("Player"));
+            hit = Physics2D.Raycast(transform.position, transform.up, 100f, LayerMask.GetMask("Player"));
             if (hit.collider != null)
             {
-                foundTarget = !agent.Raycast((transform.position + (hit.distance * transform.up)), out _);
+                foundTarget = !agent.Raycast((transform.position + (Mathf.Clamp((hit.distance-1), 1.5f, hit.distance) * transform.up)), out _);
                 //if (foundTarget) { Debug.Log("Found Target!"); }
             }
             yield return null;
@@ -181,6 +183,7 @@ public class SpearmanBehavior : MonoBehaviour
 
         //agent.ResetPath();
         agent.updatePosition = false;
+        animator.SetFloat("WalkSpeed", 0f);
     }
 
     /*private IEnumerator AcquireTarget(float delaySeconds)

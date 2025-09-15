@@ -8,8 +8,8 @@ public class Pitfall : MonoBehaviour
     // Start is called before the first frame update
 
     [SerializeField] private Room targetRoom;
-    [SerializeField] private float duration;
-    [SerializeField] private int fallDamage;
+    [SerializeField] private float duration = 1.5f;
+    [SerializeField] private int fallDamage = 2;
 
     void Start()
     {
@@ -40,14 +40,19 @@ public class Pitfall : MonoBehaviour
         collision.GetComponent<Health>().GainInvincibility();
         float t = 0;
         float normalizedTime = 0;
+        Vector3 originalScale = collision.localScale;
+        Rigidbody2D rb = collision.GetComponent<Rigidbody2D>();
+        if (rb != null) { rb.velocity.Normalize(); }
         while (t <= duration)
         {
             t += Time.deltaTime;
             normalizedTime = 1 - (t / duration);
             collision.localScale = new Vector3(normalizedTime, normalizedTime, 1);
+
+            if (rb != null) { rb.velocity = rb.velocity.normalized * normalizedTime; }
             yield return null;
         }
-        collision.localScale = Vector3.one;
+        collision.localScale = originalScale;
     }
 
     private IEnumerator FallToDeath(Transform enemy)

@@ -30,6 +30,7 @@ public class GrantPortal : MonoBehaviour
     {
         Character p = player.GetComponent<Character>();
         p.LoseControl();
+        p.transform.position = transform.position;
 
         player.transform.eulerAngles = new Vector3(0, 0, 180);
 
