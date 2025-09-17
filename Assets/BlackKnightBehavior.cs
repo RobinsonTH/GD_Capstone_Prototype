@@ -310,10 +310,18 @@ public class BlackKnightBehavior : MonoBehaviour
 
     private IEnumerator JumpTurn()
     {
-        //Debug.Log("Jumping");
+        Collider2D[] parts = GetComponentsInChildren<Collider2D>();
         yield return new WaitUntil(() => !animator.GetBool("IsJumping"));
         animator.SetBool("IsJumping", true);
+        for(int i = 0; i < parts.Length; i++)
+        {
+            parts[i].enabled = false;
+        }
         yield return new WaitUntil(() => !animator.GetBool("IsJumping"));
+        for (int i = 0; i < parts.Length; i++)
+        {
+            parts[i].enabled = true;
+        }
         yield return new WaitForSeconds(1.5f);
     }
 
@@ -354,7 +362,7 @@ public class BlackKnightBehavior : MonoBehaviour
         animator.SetTrigger("SpearSwing");
         yield return new WaitUntil(() => spear.gameObject.activeSelf);
         yield return new WaitUntil(() => !spear.gameObject.activeSelf);
-        Debug.Log("Done Swinging");
+        //Debug.Log("Done Swinging");
     }
 
 

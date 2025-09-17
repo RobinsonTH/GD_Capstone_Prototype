@@ -23,7 +23,7 @@ public class DestroyOnContact : MonoBehaviour
         {
             if (collision.CompareTag(tag))
             {
-                Debug.Log("Destroying... collided with " + collision.name);
+                //Debug.Log("Destroying... collided with " + collision.name);
                 Destroy(gameObject);
                 return;
             }

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class DodgeRoll : MonoBehaviour
 {
+    
     public AnimationCurve lerpCurve;
     //public float distance;
     [SerializeField] private float dashSpeed;
@@ -12,12 +13,14 @@ public class DodgeRoll : MonoBehaviour
     Character character;
     Health health;
     Rigidbody2D rb;
+    private AudioClip sound;
 
     private void Awake()
     {
         character = GetComponent<Character>();
         health = GetComponent<Health>();
         rb = GetComponent<Rigidbody2D>();
+        sound = Resources.Load<AudioClip>("Sounds/RPG_Essentials_Free/12_Player_Movement_SFX/30_Jump_03");
     }
     // Start is called before the first frame update
     void Start()
@@ -59,6 +62,8 @@ public class DodgeRoll : MonoBehaviour
 
             yield return null;
         }*/
+
+        AudioSource.PlayClipAtPoint(sound, transform.position, 20.0f);
 
         while (currentTime <= animSeconds)
         {

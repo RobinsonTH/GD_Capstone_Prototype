@@ -11,9 +11,12 @@ public class Door : MonoBehaviour
     protected Color unlockedColor;
     protected Color lockedColor;
 
+    private AudioClip clip;
+
     private void Awake()
     {
         sprite = GetComponent<SpriteRenderer>();
+        clip = Resources.Load<AudioClip>("Sounds/RPG_Essentials_Free/10_UI_Menu_SFX/071_Unequip_01");
         unlockedColor = sprite.color;
         lockedColor = unlockedColor;
         lockedColor.r *= 0.5f;
@@ -47,6 +50,7 @@ public class Door : MonoBehaviour
         {
             if (Open())
             {
+                AudioSource.PlayClipAtPoint(clip, transform.position);
                 GetComponent<SpriteRenderer>().enabled = false;
                 //door.excludeLayers = LayerMask.GetMask("Player");
             }

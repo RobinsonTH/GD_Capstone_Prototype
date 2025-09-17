@@ -6,6 +6,12 @@ public class EnableObjectsInSequence : MonoBehaviour
 {
     [SerializeField] List<GameObject> objects;
     [SerializeField] float delay;
+    private AudioSource audioSource;
+
+    private void Awake()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -34,6 +40,7 @@ public class EnableObjectsInSequence : MonoBehaviour
         foreach (GameObject obj in objects)
         {
             obj.SetActive(true);
+            if (audioSource != null) { audioSource.Play(); }
             yield return new WaitForSeconds(delay);
         }
     }

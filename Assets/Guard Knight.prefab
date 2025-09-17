@@ -12,10 +12,10 @@ GameObject:
   - component: {fileID: 8161219641281394991}
   - component: {fileID: 3712425472360082330}
   - component: {fileID: 8560092681858536712}
+  - component: {fileID: 335982069894048976}
   - component: {fileID: 6760664119301256038}
   - component: {fileID: 1306634660646366572}
   - component: {fileID: 4023721449254034317}
-  - component: {fileID: 335982069894048976}
   m_Layer: 12
   m_Name: TestShield
   m_TagString: Shield
@@ -180,6 +180,24 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.5, y: 1.33}
   m_EdgeRadius: 0
+--- !u!114 &335982069894048976
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 178588746920236655}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2008b9c3e4da1eb4681fcd1a4ed07be2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  time: 0.1
+  magnitude: 1
+  targetTags:
+  - Player
+  - Player Melee
+  - Shield
 --- !u!114 &6760664119301256038
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -226,24 +244,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   northLayerName: EffectsUnder
   southLayerName: Effects
---- !u!114 &335982069894048976
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 178588746920236655}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2008b9c3e4da1eb4681fcd1a4ed07be2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  time: 0.1
-  magnitude: 1
-  targetTags:
-  - Player
-  - Player Melee
-  - Shield
 --- !u!1 &1409514769771927604
 GameObject:
   m_ObjectHideFlags: 0

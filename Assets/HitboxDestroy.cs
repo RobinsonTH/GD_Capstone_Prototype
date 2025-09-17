@@ -25,4 +25,12 @@ public class HitboxDestroy : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if ((collision.CompareTag(targetTag) && !collision.GetComponentInParent<Health>().IsInvincible()) || collision.CompareTag("Environment") || collision.CompareTag("Wall") || collision.CompareTag("Shield"))
+        {
+            Destroy(gameObject);
+        }
+    }
 }

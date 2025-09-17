@@ -10,9 +10,12 @@ public class Shield : MonoBehaviour
     [SerializeField] private float magnitude;
     [SerializeField] List<string> targetTags;
 
+    private AudioClip tink;
+
     private void Awake()
     {
         colliders = transform.parent.GetComponentsInChildren<Collider2D>();
+        tink = Resources.Load<AudioClip>("Sounds/fx/select");
     }
     // Start is called before the first frame update
     void Start()
@@ -26,25 +29,38 @@ public class Shield : MonoBehaviour
         
     }
 
-    private void OnTriggerStay2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         
 
-        CollideOnce hitbox = collision.GetComponent<CollideOnce>();
-        if (hitbox != null)
-        {
-            foreach (Collider2D collider in colliders)
-            {
-                hitbox.Ignore(collider);
-            }
-        }
+        
 
         foreach (string tag in targetTags)
         {
             if (collision.CompareTag(tag))
             {
+                CollideOnce hitbox = collision.GetComponent<CollideOnce>();
+                if (hitbox != null)
+                {
+                    foreach (Collider2D collider in colliders)
+                    {
+                        hitbox.Ignore(collider);
+                        //AudioSource.PlayClipAtPoint(tink, transform.position);
+                    }
+                    //Debug.Log("Playing audio from CollideOnce Section");
+                    //AudioSource.PlayClipAtPoint(tink, transform.position);
+                }
                 //Knockback knockback = collision.GetComponentInParent<Knockback>();
-                collision.GetComponentInParent<Knockback>()?.TakeKnockback(time, magnitude, GetComponent<Collider2D>());
+
+                //AudioSource.PlayClipAtPoint(tink, transform.position);
+                //collision.GetComponentInParent<Knockback>()?.TakeKnockback(time, magnitude, GetComponent<Collider2D>());
+
+                Knockback kb = collision.GetComponentInParent<Knockback>();
+                if ((kb != null && kb.TakeKnockback(time, magnitude, GetComponent<Collider2D>())) || kb == null)
+                {
+                    //Debug.Log("Playing audio from knockback section");
+                    AudioSource.PlayClipAtPoint(tink, transform.position);
+                }
                 return;
             }
         }

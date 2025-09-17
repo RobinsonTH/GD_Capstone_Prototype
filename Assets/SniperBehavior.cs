@@ -51,7 +51,7 @@ public class SniperBehavior : MonoBehaviour
         character = GetComponent<Character>();
         rb = GetComponent<Rigidbody2D>();
         range = GetComponentInChildren<DetectionRange>();
-        Debug.Log((range != null));
+        //Debug.Log((range != null));
         //agent = GetComponent<NavMeshAgent>();
 
         startPosition = transform.position;

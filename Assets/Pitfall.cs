@@ -11,6 +11,15 @@ public class Pitfall : MonoBehaviour
     [SerializeField] private float duration = 1.5f;
     [SerializeField] private int fallDamage = 2;
 
+    private AudioClip fallClip;
+    private AudioClip landClip;
+
+    private void Awake()
+    {
+        fallClip = Resources.Load<AudioClip>("Sounds/RPG_Essentials_Free/8_Buffs_Heals_SFX/44_Sleep_01");
+        landClip = Resources.Load<AudioClip>("Sounds/RPG_Essentials_Free/12_Player_Movement_SFX/45_Landing_01");
+    }
+
     void Start()
     {
         
@@ -63,6 +72,7 @@ public class Pitfall : MonoBehaviour
 
     private IEnumerator FallDown(Transform player)
     {
+        AudioSource.PlayClipAtPoint(fallClip, player.position);
         yield return Fall(player);
         player.parent.GetComponent<SpriteRenderer>().enabled = true;
         yield return new WaitForSeconds(0.5f);
@@ -70,5 +80,7 @@ public class Pitfall : MonoBehaviour
         player.GetComponent<Health>().LoseInvincibility();
         player.GetComponent<Health>().TakeDamage(fallDamage);
         player.GetComponent<Character>().GainControl();
+        yield return new WaitForSeconds(1.0f);
+        AudioSource.PlayClipAtPoint(landClip, player.position, 5.0f);
     }
 }

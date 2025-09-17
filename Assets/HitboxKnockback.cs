@@ -21,6 +21,10 @@ public class HitboxKnockback : MonoBehaviour
         
     }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        Knockback(collision);
+    }
     private void OnTriggerStay2D(Collider2D collision)
     {
         Knockback(collision);
@@ -37,7 +41,7 @@ public class HitboxKnockback : MonoBehaviour
         {
             if (collision.CompareTag(tag))
             {
-                Debug.Log(gameObject.name + " has collided with " + collision.gameObject.name);
+                //Debug.Log(gameObject.name + " has collided with " + collision.gameObject.name);
                 //Knockback knockback = collision.GetComponentInParent<Knockback>();
                 collision.GetComponentInParent<Knockback>()?.TakeKnockback(time, magnitude, GetComponent<Collider2D>());
                 return;

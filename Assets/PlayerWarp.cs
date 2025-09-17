@@ -10,9 +10,14 @@ public class PlayerWarp : MonoBehaviour
     private Collider2D hurtbox;
     private Character character;
     private Rigidbody2D rb;
+    private AudioClip clip;
 
     public GameObject portal = null;
 
+    private void Awake()
+    {
+        clip = Resources.Load<AudioClip>("Sounds/RPG_Essentials_Free/8_Buffs_Heals_SFX/02_Heal_02");
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -38,7 +43,7 @@ public class PlayerWarp : MonoBehaviour
     {
         if (transform.parent.GetComponent<Room>() != null)
         {
-            Vector2 checkPoint = (Vector2)transform.position + (moveDirection * 0.4f);
+            Vector2 checkPoint = (Vector2)transform.position + (moveDirection * 0.43f);
             Collider2D wall = Physics2D.OverlapPoint(checkPoint, LayerMask.GetMask("Wall"));
             if (wall != null)
             {
@@ -68,7 +73,7 @@ public class PlayerWarp : MonoBehaviour
                         {
                             return false;
                         }
-                        StartCoroutine(GetComponent<PlayerWarp>().Warp(hits[hit].point, moveDirection));
+                        StartCoroutine(Warp(hits[hit].point, moveDirection));
                         return true;
                     }
                 }
@@ -90,6 +95,9 @@ public class PlayerWarp : MonoBehaviour
         //rb.simulated = false;
         rb.isKinematic = true;
 
+        AudioSource.PlayClipAtPoint(clip, transform.position, 0.5f);
+
+
         //Instantiate two portal objects at start and end points
         Instantiate(portal, ((Vector3)transform.position + (Vector3)(0.5f * moveDirection)), transform.rotation); //close portal
         Instantiate(portal, targetPosition, (transform.rotation * Quaternion.Euler(0, 0, 180f))); //far portal
@@ -98,7 +106,7 @@ public class PlayerWarp : MonoBehaviour
         yield return new WaitForSeconds(0.25f * duration);
 
         //Enter portal
-        while(timer <= 0.25f * duration)
+        while (timer <= 0.25f * duration)
         {
             timer += Time.deltaTime;
             transform.position = Vector2.Lerp(startPosition, (startPosition + moveDirection), (timer / (0.25f * duration)));
@@ -107,7 +115,7 @@ public class PlayerWarp : MonoBehaviour
 
         //Teleport, then reset variables
         transform.position = targetPosition;
-
+        
         timer = 0f;
         startPosition = targetPosition - 0.5f * moveDirection;
 

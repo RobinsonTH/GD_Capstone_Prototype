@@ -9,7 +9,7 @@ public class GameOver : MonoBehaviour
 {
     [SerializeField] private PlayerMovement player;
     [SerializeField] private Button defaultButton;
-
+    [SerializeField] private AudioSource audioSource;
     [SerializeField] UnityEvent OnRetry;
 
     // Start is called before the first frame update
@@ -39,6 +39,7 @@ public class GameOver : MonoBehaviour
 
     void GameOverScreen()
     {
+        audioSource.Stop();
         EventSystem.current.SetSelectedGameObject(defaultButton.gameObject);
         foreach (Transform child in transform)
         {
@@ -54,6 +55,7 @@ public class GameOver : MonoBehaviour
             child.gameObject.SetActive(false);
         }
         player.gameObject.SetActive(true);
+        audioSource.Play();
     }
 
     public void Quit()

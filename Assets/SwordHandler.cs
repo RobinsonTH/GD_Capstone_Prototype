@@ -6,7 +6,13 @@ using UnityEngine.InputSystem;
 public class SwordHandler : MonoBehaviour
 {
     private InputAction swing;
+    private AudioClip sound;
     [SerializeField] private CollideOnce bladeCollideOnce;
+
+    private void Awake()
+    {
+        sound = Resources.Load<AudioClip>("Sounds/RPG_Essentials_Free/10_Battle_SFX/77_flesh_02");
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -25,7 +31,7 @@ public class SwordHandler : MonoBehaviour
     {
         swing.performed -= QueueSwing;
     }
-
+    
     // Update is called once per frame
     void Update()
     {
@@ -34,7 +40,8 @@ public class SwordHandler : MonoBehaviour
 
     void PutAway()
     {
-        ClearQueue();
+        //ClearQueue();
+        GetComponent<Animator>().SetBool("SwingQueued", false);
         gameObject.SetActive(false);
     }
 
@@ -45,6 +52,7 @@ public class SwordHandler : MonoBehaviour
 
     void ClearQueue()
     {
+        AudioSource.PlayClipAtPoint(sound, transform.position);
         bladeCollideOnce.Clear();
         GetComponent<Animator>().SetBool("SwingQueued", false);
     }

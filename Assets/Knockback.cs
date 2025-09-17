@@ -44,7 +44,7 @@ public class Knockback : MonoBehaviour
     }
 
 
-    public void TakeKnockback(float time, float magnitude, Collider2D source)
+    public bool TakeKnockback(float time, float magnitude, Collider2D source)
     {
         //Debug.Log("Starting Coroutine");
         if (gameObject.activeSelf && !GetComponentInParent<Health>().IsInvincible() && !root.IsMoving())
@@ -61,16 +61,20 @@ public class Knockback : MonoBehaviour
 
 
             root.SetKnockback(time, moveDirection);
+            return true;
         }
+        return false;
     }
 
-    public void TakeManualKnockback(float time, Vector2 moveVector)
+    public bool TakeManualKnockback(float time, Vector2 moveVector)
     {
         if (gameObject.activeSelf && !GetComponentInParent<Health>().IsInvincible() && !root.IsMoving())
         {
             moveVector *= baseKnockback;
             root.SetKnockback(time, moveVector);
+            return true;
         }
+        return false;
     }
 
     private void SetKnockback(float time, Vector2 moveVector)

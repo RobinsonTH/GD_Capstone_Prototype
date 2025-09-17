@@ -11,8 +11,11 @@ public class PauseScreen : MonoBehaviour
     [SerializeField] private Camera mapCamera;
     [SerializeField] private GameObject pausePanel;
     [SerializeField] private Button defaultButton;
+    [SerializeField] private AudioSource pauseClip;
+    [SerializeField] private AudioSource resumeClip;
     private InputAction pause;
     private InputAction resume;
+    private InputAction confirm;
 
     //private InputActionMap playerMap;
     //private InputActionMap pauseMap;
@@ -38,7 +41,10 @@ public class PauseScreen : MonoBehaviour
 
         resume = InputManager.Actions.PauseScreen.Resume;
         resume.Enable();
-        resume.performed += Resume;
+
+        confirm = InputManager.Actions.UI.Submit;
+        confirm.Disable();
+        //resume.performed += Resume;
     }
 
     private void OnDisable()
@@ -67,6 +73,10 @@ public class PauseScreen : MonoBehaviour
             mapCamera.gameObject.SetActive(true);
         }
         Time.timeScale = 0.0f;
+        pauseClip.Play();
+        pause.performed -= Pause;
+        resume.performed += Resume;
+        StartCoroutine(PauseDelay());
         //Time.timeScale = Time.timeScale * -1 + 1
         //Debug.Log("paused");
     }
@@ -88,7 +98,23 @@ public class PauseScreen : MonoBehaviour
         
         pausePanel.SetActive(false);
         Time.timeScale = 1.0f;
+        resumeClip.Play();
+        pause.performed += Pause;
+        resume.performed -= Resume;
+        StartCoroutine(PauseDelay());
     }
 
+    private IEnumerator PauseDelay()
+    {
+        yield return new WaitForSeconds(0.1f);
+        if (!confirm.enabled)
+        {
+            confirm.Enable();
+        }
+        else
+        {
+            confirm.Disable();
+        }
+    }
     
 }

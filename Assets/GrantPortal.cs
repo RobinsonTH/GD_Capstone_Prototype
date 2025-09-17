@@ -5,7 +5,13 @@ using UnityEngine;
 public class GrantPortal : MonoBehaviour
 {
     bool animationFinished;
+    private AudioSource audioSource;
     // Start is called before the first frame update
+
+    private void Awake()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
     void Start()
     {
         animationFinished = false;
@@ -31,6 +37,7 @@ public class GrantPortal : MonoBehaviour
         Character p = player.GetComponent<Character>();
         p.LoseControl();
         p.transform.position = transform.position;
+        audioSource.Play();
 
         player.transform.eulerAngles = new Vector3(0, 0, 180);
 

@@ -37,7 +37,7 @@ public class Health : MonoBehaviour
 
     
 
-    public void TakeDamage(int damage)
+    public bool TakeDamage(int damage)
     {
         if (invincible == 0)
         {
@@ -45,7 +45,9 @@ public class Health : MonoBehaviour
             if (OnDamage != null) { OnDamage(damage); }
             if (OnHealthChange != null) { OnHealthChange(-damage); }
             if (currentHealth <= 0) { Die(); }
+            return true;
         }
+        return false;
     }    
 
     public void GainHealth(int healing)
