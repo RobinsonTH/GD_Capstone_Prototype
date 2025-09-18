@@ -11,6 +11,7 @@ public class LockedDoor : Door
     {
         locked = true;
         sprite = GetComponent<SpriteRenderer>();
+        clip = Resources.Load<AudioClip>("Sounds/RPG_Essentials_Free/10_UI_Menu_SFX/071_Unequip_01");
         unlockedColor = sprite.color;
         lockedColor = unlockedColor;
         lockedColor.r *= 0.5f;

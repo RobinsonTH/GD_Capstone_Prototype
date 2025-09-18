@@ -178,7 +178,7 @@ public class BlackKnightBehavior : MonoBehaviour
                     case State.FanSpear:
                         coroutine = FanSpear();
                         state = State.ThrowSpear;
-                        iterator = Math.Max(2, 8 * (health.currentHealth / health.maxHealth));
+                        iterator = Math.Max(2, (int)Math.Ceiling(8 * (float)health.currentHealth / health.maxHealth));
                         break;
                     case State.ThrowSpear:
                         coroutine = SpearThrow();
@@ -272,11 +272,13 @@ public class BlackKnightBehavior : MonoBehaviour
 
     private IEnumerator MonitorLocation()
     {
+        health.GainInvincibility();
         yield return new WaitUntil(() => (target != null));
         
         sprite.sprite = LoadSprite("black_knight_south");
 
         yield return new WaitForSeconds(1f);
+        health.LoseInvincibility();
     }
     void SpotTarget(GameObject newTarget)
     {

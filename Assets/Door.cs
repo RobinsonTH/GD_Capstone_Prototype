@@ -11,7 +11,7 @@ public class Door : MonoBehaviour
     protected Color unlockedColor;
     protected Color lockedColor;
 
-    private AudioClip clip;
+    protected AudioClip clip;
 
     private void Awake()
     {
